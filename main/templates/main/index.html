@@ -1,0 +1,232 @@
+{% extends 'main/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block container %}
+
+<!-- MAIN CONTENT-->
+<main class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <h3>OverView</h3>
+        </div>
+        <div class="row rowpadding">
+            <div class="col-md-3">
+                <div class="overviewbox">
+                    <span class="fa-stack ">
+                  <i class="fa logo-hex icon1 fa-stack-2x"></i>
+                  <i class="zmdi zmdi-wrench"></i>
+                  </span>
+                    <span class="heading-title-box">
+                  Gears
+                  </span>
+                    <div class="description">
+                        100
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="overviewbox">
+                    <span class=" fa-stack ">
+                  <i class="fa logo-hex icon2 fa-stack-2x"></i>
+                  <i class="zmdi zmdi-store"></i>
+                  </span>
+                    <span class="heading-title-box">
+                  Warehouse
+                  </span>
+                    <div class="description">
+                        50 Gears
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="overviewbox">
+                    <span class="fa-stack ">
+                  <i class="fa logo-hex icon3 fa-stack-2x"></i>
+                  <i class="zmdi zmdi-accounts-list"></i>
+                  </span>
+                    <span class="heading-title-box">
+                  Total Jobs
+                  </span>
+                    <div class="description">
+                        10
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="overviewbox">
+                    <span class=" fa-stack "><i class="fa logo-hex icon4 fa-stack-2x"></i><i class="zmdi zmdi-time"></i>
+                  </span>
+                    <span class="heading-title-box">
+                  Active Jobs
+                  </span>
+                    <div class="description">
+                        20
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row rowpadding">
+            <h3>Latest Jobs</h3>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th>Job No.</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Gears</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        1
+                        <!-- <button class="btn btn-primary view-details-btn batch-details" data-toggle="modal" value="{{ deliveries.order_id }}" data-target="#view0"><i class="fas fa-eye" data-dismiss="modal"></i></button> -->
+                    </td>
+                    <td>Top constructors</td>
+                    <td>2020/07/09</td>
+                    <td>100</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    <div class="row rowpadding">
+        <h3>Gears Added Recently</h3>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            <th></th>
+            <th>Gear No.</th>
+            <th>Date</th>
+            <th>Numbers</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <!-- <button class="btn btn-primary view-details-btn batch-details" data-toggle="modal" value="{{ deliveries.batch_id }}" data-target="#viewbatch0"><i class="fas fa-eye" data-dismiss="modal"></i></button> -->
+                </td>
+                <td>1</td>
+                <td>2020/02/08</td>
+                <td>60</td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.view-details-btn').on("click",function(){
+      $('#products').empty().append("<b><u>Products</u></b>");
+      $('#product_prices').empty().append("<b><u>Price</u></b>");
+      $('#commentfield').empty()
+      var id=this.value;
+      {% for order in order_details %}
+        if (id == '{{order.order_id}}') {
+          $('#order_status').text('{{order.status}}');
+          $('#sender_fullname').text('{{order.customerObj.customer_name}}');
+          $('#street_address').text('{{order.customerObj.address}}');
+          // $('#city').text('{{order.customerObj.city}}');
+          $('#contact_one').text('{{order.customerObj.phone_number}}');
+          $('#contact_two').text('{{order.customerObj.mobile_number}}');
+          $('#sender_email').text('{{order.customerObj.email}}');
+
+          $('#show_order_id').text(id);
+          $('#show_order_entry_date').text('{{order.entry_date}}');
+          $('#show_order_receiver_name').text('{{order.receiverObj.receiver_name}}');
+          $('#show_order_receiver_city').text('{{ order.receiverObj.receiver_city }}');
+          $('#show_order_receiver_address').text('{{ order.receiverObj.receiver_street_address }}');
+          $('#show_order_receiver_contact_number').text('{{order.receiverObj.receiver_contact_number}}');
+          $('#show_order_receiver_alt_contact_number').text('{{order.receiverObj.receiver_alternative_contact_number}}');
+          $('#show_order_estimated_delivery_date').text('{{order.estimated_delivery_date}}');
+          $('#show_order_weight').text('{{order.weight}}');
+          $('#show_order_receivable_price').text('{{order.cash_receivable}}');
+          $('#show_order_handling').text('{{order.parcel_handling}}');
+          $('#show_order_service_charge').text('{{order.service_charge}}');
+          balance_amount = parseInt('{{order.cash_receivable}}') - parseInt('{{order.service_charge}}');
+          $('#show_balance_amount').text(balance_amount);
+
+          $('#show_order_remark').text('{{order.remark}}');
+
+          {% for comments in order.comments_set.all %}
+            if('{{comments.orderobj.order_id}}' == '{{ order.order_id }}'){
+              $(`<p> {{comments.comments}} </p>`).appendTo('#commentfield');
+            }
+          {% endfor %}
+
+          {% for products in order.products_set.all %}
+            $('#products').append("<li>{{ products.product_name }}</li>");
+            $('#product_prices').append("<li>{{ products.price }}</li>");
+          {% endfor %}
+        }
+      {% endfor %}
+    });
+
+    $('.batch-details').on('click',function(){
+      $('#viewbatchtbody').empty();
+      var id=this.value;
+      var failed_amount = 0;
+      var remaining_amount = 0;
+      {% for delivery in delivery_details %}
+        if ('{{delivery.batch_id}}' == id) {
+          $('#batch-show_batch_id').text('{{delivery.batch_id}}');
+          $('#batch-show_batch_date').text('{{delivery.entry_date}}');
+          $('#batch-show_deliveryagent_name').text('{{delivery.delivery_agent}}');
+          $('#batch-show_deliveryagent_number').text('{{delivery.delivery_agent.contact_number}}');
+          $('#batch-show_delivery_area').text('{{delivery.delivery_city}}');
+          $('#batch-show_deliveryagent_totalamount').text(' Rs. {{delivery.batch_amount}}');
+
+          {% for orders in order_details %}
+            if ('{{orders.batch_id.batch_id}}' == '{{delivery.batch_id}}') {
+              $(`<tr>
+                  <td>{{orders.order_id}}</td>
+                  <td>{{orders.receiverObj.receiver_name}}</td>
+                  <td>{{orders.receiverObj.receiver_street_address}}</td>
+                  <td>{{orders.receiverObj.receiver_contact_number}}</td>
+                  <td>{{orders.receiverObj.receiver_contact_number}}</td>
+                  <td>{{orders.receiverObj.receiver_contact_number}}</td>
+                  <td>{{orders.cash_receivable}}</td>
+                  <td>
+                     {{orders.status}}
+                  </td>
+                </tr>`).appendTo('#viewbatchtbody');
+              remaining_amount += parseFloat('{{orders.cash_receivable}}');
+            }
+          {% endfor %}
+
+          failed_amount = parseFloat('{{delivery.batch_amount}}') - remaining_amount;
+          $(`
+            <tr>
+              <td colspan="7">Total Amount</td>
+              <td>Rs. {{ delivery.batch_amount }}</td>
+            </tr>
+            <tr>
+              <td colspan="7">Total Failed Amount</td>
+              <td>Rs. `+failed_amount+`</td>
+            </tr>
+          `).appendTo('#viewbatchtbody');
+        }   // end of if
+      {% endfor %}
+
+      $('.changestatus').click(function(){
+        var id = this.id.split(" ");
+        $('#status_order_no').text(id[0]);
+        $('#status_hidden_order_value').val(id[0]);
+        $('#status_hidden_batch_value').val(id[1]);
+      });
+    });
+  });
+</script>
+
+{% endblock %}

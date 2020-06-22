@@ -1,0 +1,128 @@
+<aside class="page-wrapper block1 toggled">
+  <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+    <i class="fas fa-bars"></i>
+  </a>
+  <nav id="sidebar" class="sidebar-wrapper">
+    <!-- sidebar-header  -->
+    <div class="sidebar-search">
+      <div>
+        <div class="input-group">
+          <!-- <input type="text" class="form-control search-menu" placeholder="Search..."> -->
+          <div class="input-group-append">
+            <span style="color: black;font-weight: bold;font-size: 19px;">
+                  <p>Tick Scaffold</p>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- sidebar-search  -->
+    <div class="sidebar-menu">
+      <ul>
+        <li>
+          <a href="{% url 'index_page' %}">
+          <i class="zmdi zmdi-view-dashboard"></i>
+          <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar-dropdown">
+          <a href="#"><i class="zmdi zmdi-store "></i>Warehouse</a>
+          <div class="sidebar-submenu">
+            <ul>
+              <li>
+                <a href="{% url 'add_gear' %}">Add Gears</a>
+              </li>
+              <li>
+                <a href="{% url 'view_gear' %}">View Gears</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+<!--        <li class="sidebar-dropdown">-->
+<!--          <a href="#"><i class="zmdi zmdi-store "></i>Warehouse</a>-->
+<!--          <div class="sidebar-submenu">-->
+<!--         <ul>-->
+<!--              <li>-->
+<!--                <a href="#">Add Gears</a>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <a href="#">View All</a>-->
+<!--              </li>-->
+<!--          </ul>-->
+<!--        </li>-->
+        <li class="sidebar-dropdown">
+          <a href="#">
+            <i class="zmdi zmdi-account-box-o"></i>
+            <span>Jobs</span>
+          </a>
+          <div class="sidebar-submenu">
+            <ul>
+              <li><a href="{% url 'add_jobs' %}">Create Job</a></li>
+              <li><a href="{% url 'view_jobs' %}">All Jobs</a></li>
+            </ul>
+          </div>
+        </li>
+        <!-- sidebar-menu  -->
+
+        <!-- sidebar-content  -->
+  </nav>
+</aside>
+<div class="header">
+  <div class="header-background">
+      <h3>Dashboard</h3>
+  </div>
+
+
+  <div class="logout">
+ <div class="notification">
+  <a href="#">
+    <i class="fas fa-bell"></i><span class="countnoti" id="unread_notification_count"></span>
+  </a>
+    <ul id = "notification-list">
+
+    </ul>
+  </div>
+    <h4><a href= "#">Logout</a></h4>
+  </div>
+</div>
+<!-- sidebar-wrapper  -->
+
+
+<script type = "text/javascript">
+
+    $('.fas.fa-bell').click(function(){
+      $(this).parents('.notification').find('#notification-list').toggleClass('show');
+      $.post( "#",
+        {
+          'data': '1'
+        },
+        function( data ) {
+          console.log(data)
+        }
+      );
+    });
+
+   $.ajax({
+      type: "GET",
+      url: "#",  // URL to your view that serves new info
+      success: function(data) {
+          unread_notification_count = 0;
+          for(var i=0;i<data['message_details'].length;i++){
+            if(data['message_details'][i]['is_viewed'] == false){
+              unread_notification_count++;
+              $('#notification-list').append(`
+                <li style="background-color:#d6c4c4">`+data['message_details'][i]['message']+`</li>
+              `)
+            }else{
+              $('#notification-list').append(`
+                <li>`+data['message_details'][i]['message']+`</li>
+              `)
+            }
+
+          }
+          $('#unread_notification_count').text(unread_notification_count).css({backgroundColor:'#df6d6d',color:'white'});
+      }
+  });
+</script>

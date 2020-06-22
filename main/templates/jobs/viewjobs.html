@@ -1,0 +1,145 @@
+{% extends 'main/base.html' %}
+
+{% block container %}
+<main class="page-content">
+  <div class="container-fluid">
+    <div class="row headingtitle">
+        <h3>Jobs Details</h3>
+    </div>
+    <div class="text-center">
+        <div class="row add">
+            <a href="{% url 'add_jobs' %}"> <button  class="btn btn-primary">Create Job</button> </a>
+        </div>
+        <input type="text" placeholder="Filter" class='table-search-user' data-table-search="myTable" />
+        <select class="form-control searchid" id="dropdownList">
+            <option value="orderid">By User Name</option>
+            <option value="phone">By City</option>
+        </select>
+    </div>
+    <div class="scroller">
+        <table class="table table-striped" id="myTable">
+          <thead>
+            <th></th>
+            <th>Gear</th>
+            <th>Company</th>
+            <th>Date</th>
+            <th>Total Quantity</th>
+            <th>Total Price</th>
+            <th>Status</th>
+          </thead>
+          <tbody>
+            <tr>
+                <td>
+              </td>
+              <td id="">
+                      <div class="row ">
+                  <div class="col-md-3">
+                        Name
+                  </div>
+                  <div class="col-md-3">
+                        Size
+                  </div>
+                  <div class="col-md-3">
+                        Quantity
+                  </div>
+                  <div class="col-md-3">
+                        Price
+                  </div>
+               </div>
+
+              </td>
+              <td id=""></td>
+              <td id=""></td>
+              <td id=""></td>
+              <td id=""></td>
+              <td id=""></td>
+
+                </tr>
+            {% for job in jobs %}
+            <tr>
+              <td>
+                <button class="btn btn-primary view-edit-btn" data-toggle="modal" data-target="#edit0" value="{{u.id}}"><i class="fas fa-edit"></i></button>
+                <form method="post" class="deleteuserdata" action="#">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{u.id}}">
+                    <button class="btn btn-primary deleteuser"><i class="far fa-trash-alt"></i></button>
+                </form>
+              </td>
+              <td id="">
+                  {% for ordergear in job.order.all %}
+                      <div class="row ">
+                  <div class="col-md-3">
+                        {{ordergear.gear.name}}
+                  </div>
+                  <div class="col-md-3">
+                        {{ordergear.gear.size}}
+                  </div>
+                  <div class="col-md-3">
+                        {{ordergear.used_quantity}}
+                  </div>
+                  <div class="col-md-3">
+                        $ {{ordergear.subtotal_price}}
+                  </div>
+               </div>
+                   {% endfor %}
+              </td>
+              <td id="">{{ job.company_name }}</td>
+              <td id="">{{ job.date }}</td>
+              <td id="">{{ job.total_quantity }}</td>
+              <td id="">$ {{ job.total_price }}</td>
+              {% if job.status == "active" %}
+                <td><!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#statusModal">
+                  Active
+                </button>
+                    <!-- Status Modal-->
+                  <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                           <h3>Please select Current Status:</h3> <br> <br>
+                              <form action="#" method="post">
+                                  {% csrf_token %}
+                                  <div class="d-flex justify-content-center">
+                                      <input type="hidden" name="job_id" value="{{ job.id }}">
+                                    <label for="status">Status:</label>
+                                    <select name="status">
+                                        <option value="active">Active</option>
+                                        <option value="finished">Finished</option>
+                                    </select>
+                                </div>
+                           </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                             <button type="Submit" class="btn btn-primary">Save changes</button>
+                          </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+              </td>
+               {% endif %}
+                {% if job.status == "finished" %}
+               <td>
+                   <a href="{% url 'view_return_jobs' job.id %}"><button type="button" class="btn btn-success">
+                  Finished
+                </button></a>
+              </td>
+                {% endif %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+</main>
+
+
+{% endblock %}
