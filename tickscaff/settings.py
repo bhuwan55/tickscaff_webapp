@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
+    'company',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,5 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+LOGOUT_REDIRECT_URL = 'main:login_page'

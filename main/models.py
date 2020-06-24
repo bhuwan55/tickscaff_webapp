@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from company.models import Company
 
 # Create your models here.
 
@@ -37,7 +38,7 @@ STATUS_CHOICES = (
 
 
 class Job(models.Model):
-    company_name = models.CharField(max_length=100)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     status = models.CharField(max_length=50,choices=STATUS_CHOICES, default="active")
     order = models.ManyToManyField(Ordergear)
     returned = models.ManyToManyField(Returnedgear)

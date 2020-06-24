@@ -6,24 +6,26 @@
    <main class="page-content">
       <div class="container-fluid">
         <div class="row headingtitle">
-              <h3></h3>
+              <h3>Return Form</h3>
             </div>
               <div class="addStaff-Form">
                 <form method="post" action="#" class="myform" enctype="multipart/form-data" >
                     {% csrf_token %}
                     <div class="row form-group">
-                        <h4 class="col px-md-0">Select Gears</h4>
+                        <h4 class="col px-md-0"></h4>
                     </div>
                     {% if message %}
                     <h3 style="color:red" >{{ message }}</h3>
                     {% endif %}
+                    {% for order in job.order.all %}
                     <div class="row form-group clone">
                     <div class="col-md-2">
                         <label for="name">Name:</label>
+                        <input type="text" class="id" name="return_id" value="{{order.id}}" hidden>
                         <select name="name" class="mx-1 h-50 w-100 ">
-                            <option value="0">Select Gear</option>
+                            <option value="{{ order.gear.name }}">{{ order.gear.name }}</option>
                             {% for gear in  gear %}
-                          <option value="{{gear.id}},{{gear.name}}">{{gear.name}}</option>
+                          <option value="{{gear.name}}">{{gear.name}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -31,32 +33,32 @@
                     <div class="col-md-2">
                         <label for="size">Size:</label>
                         <select name="size" class="mx-1 h-50 w-100 ">
-                            <option value="0">Select Size</option>
+                            <option value="{{ order.gear.size }}">{{ order.gear.size }}</option>
                             {% for gear in  gear %}
                           <option value="{{gear.size}}">{{gear.size}}</option>
                             {% endfor %}
                         </select>
                     </div>
 
-                    <div class="col-md-2">
+                     <div class="col-md-2">
                         <label for="used_quantity">Quantity:</label>
-                        <input type="text" name="used_quantity" id="" class="form-control" required>
+                        <input type="text" name="used_quantity" id="" class="form-control" value="{{ order.used_quantity }}" required>
                     </div>
-<!--                        <div class="col-md-2">-->
-<!--                        <label for="subtotal_price">Price:</label>-->
-<!--                        <input type="text" name="subtotal_price" id="subtotal_price" class="form-control" required>-->
-<!--                    </div>-->
+
+                        <button type='button' class='btn remove-row btn-danger mx-2 h-30 my-4' onclick="alert('You deleted a row !!!');">Cancel</button>
                     </div>
+                    {% endfor %}
                         <div>
                             <button class="btn btn-danger add-row"> Add</button>
                         </div>
                     </div>
+          <br> <br> <br>
 
                 <div class="row form-group">
                     <div class="col-md-4">
-                        <label for="company">Select Company:</label>
+                        <label for="company_name">Company Name:</label>
                         <select name="company" class="mx-1 h-50 w-100 ">
-                            <option value="0">Select Company</option>
+                            <option value="{{ job.company.id }}">{{ job.company.name }}</option>
                             {% for company in  company %}
                           <option value="{{company.id}}">{{company.name}}</option>
                             {% endfor %}
@@ -67,7 +69,7 @@
                 <div class="row form-group">
                     <div class="col-md-4">
                         <label for="date">Date</label>
-                        <input type="date" name="date" id="date1" class="form-control" required>
+                        <input type="date" name="date" id="" value="{{ job.date }}"  class="form-control" required>
                     </div>
 
                 </div>
@@ -85,8 +87,18 @@
 <!--                </div>-->
                 <div class="row form-group">
                 <div class="col-md-12">
-                    <input type = submit class="btn btn-primary submit form-control" id="submit_btn">
+                    <div class="row form-group">
+                <div class="col-md-2">
+                    <button class="btn btn-warning" type="submit" >Edit</button>
                 </div>
+                <div class="col-md-2">
+                 <a href="{% url 'main:view_jobs' %}">
+                    <button type="button" class="btn btn-danger" >Close
+                     </button>
+                </a>
+                </div>
+                </div>
+            </div>
             </div>
         </form>
     </div>
@@ -101,7 +113,7 @@
             confirmPassword = $('#confirm-password').val()
             $('div#error').empty();
             if (password===confirmPassword) {
-    
+
                 $('.submit').attr("disabled", false);
             }else{
                  $('div#error').append(`<span class="error" style="color:red">Passwords do not match</span>`);
@@ -109,7 +121,7 @@
                 $('.submit').attr("disabled", true)
             }
         });
-        
+
         $('#username, #email').focusout(function(){
             var username = $('#username').val();
             var email = $('#email').val();
@@ -137,12 +149,12 @@
             });
         });
     });
-    
+
 $(document).ready(function(){
    $( ".add-row" ).click(function(){
       var $clone = $( ".clone" ).first().clone();
-      $clone.append( "<button type='button' class='btn remove-row btn-danger mx-2 h-30 my-4'>Cancel</button>" );
       $clone.insertBefore( ".add-row" );
+      $( "input.id:Last" ).replaceWith( "<input type='text' class='id' name='return_id' value='-1' hidden>" );
    });
 
    $( ".myform" ).on("click", ".remove-row", function(){

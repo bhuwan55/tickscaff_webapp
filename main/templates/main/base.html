@@ -41,7 +41,7 @@
       </style>
    </head>
    <!-- Main CSS-->
-
+{% if user.is_authenticated %}
       {% include 'main/header.html' %}
       <body>
           <div>
@@ -52,5 +52,9 @@
 
 
       {% include 'main/footer.html' %}
+{% endif %}
 
+    {% if user.is_authenticated == False %}
+      <h3> You are not logged in!! Please <b><a href="{% url 'main:login_page' %}"> Log in </a></b></h3>
+    {% endif %}
 </html>

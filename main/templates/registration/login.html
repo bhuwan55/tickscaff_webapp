@@ -1,0 +1,149 @@
+{% load staticfiles %}
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<!------ Include the above in your HEAD tag ---------->
+
+
+<style type="text/css">
+
+  img{
+      max-width: 100%!important;
+}
+.login-block{
+
+
+width:70%;
+padding : 50px 0;
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0 auto;
+background: linear-gradient(45deg, #799df0, white);
+}
+.banner-sec{
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0 10px 10px 0;
+  padding:0;
+  padding-right: 20px;
+}
+.container{
+  background:#fff;
+  border-radius: 10px;
+   box-shadow:0 0 15px #ccc;
+   width: 78%;
+ }
+
+/*.carousel-inner{
+  border-radius:0 10px 10px 0;
+}
+.carousel-caption{
+  text-align:left; left:5%;
+}*/
+
+.login-sec{
+  padding: 50px 30px 0 30px;
+   position:relative;
+ }
+.login-sec .copy-text{
+  position:absolute;
+   width:80%;
+   bottom:20px;
+   font-size:13px;
+    text-align:center;
+  }
+.login-sec .copy-text i{
+  color:#FEB58A;
+}
+.login-sec .copy-text a{
+  color:#E36262;
+}
+.login-sec h2{
+  margin-bottom:30px;
+  font-weight:800;
+   font-size:30px;
+    color: #3b5998;
+  }
+.login-sec h2:after{
+  content:" ";
+   width:100px;
+   height:5px;
+   background:#799df0;
+   display:block;
+   margin-top:20px;
+   border-radius:3px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+.btn-login{
+  background:#799df0;
+   color:#fff;
+    font-weight:600;
+  }
+.banner-text{
+  width:82%;
+   position:absolute;
+    bottom:70px;
+     padding-left:20px;
+   }
+.banner-text h2{
+  color:#fff;
+   font-weight:600;
+   font-size: 1.8em;
+ }
+.banner-text h2:after{
+  content:" ";
+   width:100px;
+    height:5px;
+     background:#FFF;
+     display:block;
+      margin-top:20px;
+       border-radius:3px;
+     }
+
+</style>
+
+<body class="login-block">
+
+    <div class="container">
+	<div class="row">
+		<div class="col-md-7 login-sec">
+		    <h2 class="text-center">Login To Your Account</h2>
+            {% if message %}
+                    <p style="color:red" >{{ message }}</p>
+            {% endif %}
+            <form class="login-form" action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="" class="text-uppercase">Username</label>
+                    <input type="text" class="form-control" placeholder="Username" name="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="text-uppercase">Password</label>
+                    <input type="password" class="form-control" placeholder="Password" name="password">
+                </div>
+
+
+                <div class="check">
+                    <button type="submit" class="btn btn-login">Login</button>
+                </div>
+            </form>
+
+		</div>
+
+		<div class="col-md-5 banner-sec">
+          <img src="/media/images/logo.png" alt="">
+        </div>
+
+        <div class="row form-group">
+
+            <div class="col-md-12" style="padding-left:30px;">
+                <p style="font-size: 13px;">Designed & Developed By <a href="">Bhuwan Joshi</a> Copyright@  2020, All rights Reserved.</p>
+            </div>
+        </div>

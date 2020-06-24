@@ -24,7 +24,7 @@ Dashboard
                   Gears
                   </span>
                     <div class="description">
-                        100
+                        {{ gear_count }}
                     </div>
                 </div>
             </div>
@@ -35,10 +35,10 @@ Dashboard
                   <i class="zmdi zmdi-store"></i>
                   </span>
                     <span class="heading-title-box">
-                  Warehouse
+                  Company
                   </span>
                     <div class="description">
-                        50 Gears
+                        {{ company_count }}
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@ Dashboard
                   Total Jobs
                   </span>
                     <div class="description">
-                        10
+                   {{ job_count }}
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@ Dashboard
                   Active Jobs
                   </span>
                     <div class="description">
-                        20
+                    {{ active_job_count }}
                     </div>
                 </div>
             </div>
@@ -77,20 +77,36 @@ Dashboard
             <thead>
                 <tr>
                 <th>Job No.</th>
-                <th>Name</th>
-                <th>Date</th>
                 <th>Gears</th>
+                <th>Date</th>
+                <th>Company</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
-                        1
-                        <!-- <button class="btn btn-primary view-details-btn batch-details" data-toggle="modal" value="{{ deliveries.order_id }}" data-target="#view0"><i class="fas fa-eye" data-dismiss="modal"></i></button> -->
+                        <a href="{% url 'main:edit_jobs' latest_job.id %}"><button class="btn btn-primary view-details-btn batch-details" data-toggle="modal" value="" data-target="#view0"><i class="fas fa-eye" data-dismiss="modal"></i></button></a>
                     </td>
-                    <td>Top constructors</td>
-                    <td>2020/07/09</td>
-                    <td>100</td>
+                    <td>
+                        {% for ordergear in latest_job.order.all %}
+                      <div class="row ">
+                      <div class="col-md-3">
+                            {{ordergear.gear.name}}
+                      </div>
+                      <div class="col-md-3">
+                            {{ordergear.gear.size}}
+                      </div>
+                      <div class="col-md-3">
+                            {{ordergear.used_quantity}}
+                      </div>
+                      <div class="col-md-3">
+                            $ {{ordergear.subtotal_price}}
+                      </div>
+                        </div>
+                   {% endfor %}
+                    </td>
+                    <td>{{ latest_job.date }}</td>
+                    <td>{{ latest_job.company.name }}</td>
                 </tr>
             </tbody>
         </table>
@@ -103,7 +119,7 @@ Dashboard
         <thead>
             <tr>
             <th></th>
-            <th>Gear No.</th>
+            <th>Gear Name.</th>
             <th>Date</th>
             <th>Numbers</th>
 
@@ -114,9 +130,9 @@ Dashboard
                 <td>
                     <!-- <button class="btn btn-primary view-details-btn batch-details" data-toggle="modal" value="{{ deliveries.batch_id }}" data-target="#viewbatch0"><i class="fas fa-eye" data-dismiss="modal"></i></button> -->
                 </td>
-                <td>1</td>
-                <td>2020/02/08</td>
-                <td>60</td>
+                <td>{{ latest_gear.name }}</td>
+                <td>{{ latest_gear.date }}</td>
+                <td>{{ latest_gear.avail_quantity }}</td>
             </tr>
         </tbody>
     </table>

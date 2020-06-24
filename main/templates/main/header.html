@@ -20,7 +20,7 @@
     <div class="sidebar-menu">
       <ul>
         <li>
-          <a href="{% url 'index_page' %}">
+          <a href="{% url 'main:index_page' %}">
           <i class="zmdi zmdi-view-dashboard"></i>
           <span>Dashboard</span>
           </a>
@@ -31,10 +31,10 @@
           <div class="sidebar-submenu">
             <ul>
               <li>
-                <a href="{% url 'add_gear' %}">Add Gears</a>
+                <a href="{% url 'main:add_gear' %}">Add Gears</a>
               </li>
               <li>
-                <a href="{% url 'view_gear' %}">View Gears</a>
+                <a href="{% url 'main:view_gear' %}">View Gears</a>
               </li>
             </ul>
           </div>
@@ -59,8 +59,21 @@
           </a>
           <div class="sidebar-submenu">
             <ul>
-              <li><a href="{% url 'add_jobs' %}">Create Job</a></li>
-              <li><a href="{% url 'view_jobs' %}">All Jobs</a></li>
+              <li><a href="{% url 'main:add_jobs' %}">Create Job</a></li>
+              <li><a href="{% url 'main:view_jobs' %}">All Jobs</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="sidebar-dropdown">
+          <a href="#">
+            <i class="zmdi zmdi-money-box"></i>
+            <span>Company</span>
+          </a>
+          <div class="sidebar-submenu">
+            <ul>
+              <li><a href="{% url 'company:add_company' %}">Create Company</a></li>
+              <li><a href="{% url 'company:view_company' %}">All Company</a></li>
             </ul>
           </div>
         </li>
@@ -84,7 +97,7 @@
 
     </ul>
   </div>
-    <h4><a href= "#">Logout</a></h4>
+    <h4><a href= "{% url 'main:logout_view' %}">Logout</a></h4>
   </div>
 </div>
 <!-- sidebar-wrapper  -->
