@@ -78,6 +78,7 @@ def EditGear(request, id):
 		unit_price = request.POST.get("unit_price")
 		try:
 			image = request.FILES['image']
+			gear.image = image
 		except:
 			image = request.POST.get("image")
 
@@ -86,7 +87,6 @@ def EditGear(request, id):
 		gear.avail_quantity = avail_quantity
 		gear.date = date
 		gear.unit_price = unit_price
-		gear.image = image
 		gear.save()
 
 	return render(request,'gear/editgear.html', {'gear': gear})
@@ -170,7 +170,7 @@ def ViewJobs(request):
 
 def EditJobs(request, id):
 	job = Job.objects.get(id=id)
-	company = Company.objects.all()
+	companies = Company.objects.all()
 	gear = Gear.objects.all()
 
 	if request.method == "POST":
@@ -251,7 +251,7 @@ def EditJobs(request, id):
 		job.total_price = total_price
 		job.save()
 
-	return render(request, 'jobs/editjobs.html', {'job':job,'company':company,'gear':gear})
+	return render(request, 'jobs/editjobs.html', {'job':job, 'companies':companies,'gear':gear})
 
 
 def DeleteJobs(request,id):

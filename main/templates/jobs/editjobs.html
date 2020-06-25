@@ -59,7 +59,7 @@
                         <label for="company_name">Company Name:</label>
                         <select name="company" class="mx-1 h-50 w-100 ">
                             <option value="{{ job.company.id }}">{{ job.company.name }}</option>
-                            {% for company in  company %}
+                            {% for company in  companies %}
                           <option value="{{company.id}}">{{company.name}}</option>
                             {% endfor %}
                         </select>

@@ -31,12 +31,12 @@ def EditCompany(request, id):
         address = request.POST.get("address")
         try:
             image = request.FILES['image']
+            company.image = image
         except:
             image = request.POST.get("image")
 
         company.name = name
         company.address = address
-        company.image = image
         company.save()
 
     return render(request, 'editcompany.html', {'company': company})
