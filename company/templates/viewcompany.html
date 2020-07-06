@@ -21,8 +21,8 @@
           <thead>
             <th></th>
             <th>Name</th>
-            <th>Address</th>
-            <th>Image</th>
+            <th>Site Address</th>
+            <th>Date of Installation</th>
           </thead>
           <tbody>
           {% for company in company %}
@@ -32,8 +32,8 @@
                   <a href="{% url 'company:delete_company' company.id %}"><button class="btn btn-primary deleteuser" onclick="return confirm('Are you sure you want to delete this gear ?');"><i class="far fa-trash-alt"></i></button></a>
               </td>
               <td id="">{{ company.name }}</td>
-              <td id="">{{ company.address }}</td>
-              <td id=""><a href=""><img src="/media/{{ company.image }}" style="width:80px;height:80px;" alt=""></a></td>
+              <td id="">{{ company.site }}</td>
+              <td id="">{{ company.date_for_installation }}</td>
             </tr>
           {% endfor %}
           </tbody>

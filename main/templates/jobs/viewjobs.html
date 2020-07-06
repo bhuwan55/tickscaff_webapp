@@ -20,69 +20,26 @@
         <table class="table table-striped" id="myTable">
           <thead>
             <th></th>
-            <th>Gear</th>
+            <th>Site Address</th>
             <th>Company</th>
-            <th>Date</th>
             <th>Total Quantity</th>
-            <th>Total Price</th>
+            <th>Total weight</th>
+            <th>Date of Installation</th>
             <th>Status</th>
           </thead>
           <tbody>
-            <tr>
-                <td>
-              </td>
-              <td id="">
-                      <div class="row ">
-                  <div class="col-md-3">
-                        Name
-                  </div>
-                  <div class="col-md-3">
-                        Size
-                  </div>
-                  <div class="col-md-3">
-                        Quantity
-                  </div>
-                  <div class="col-md-3">
-                        Price
-                  </div>
-               </div>
-
-              </td>
-              <td id=""></td>
-              <td id=""></td>
-              <td id=""></td>
-              <td id=""></td>
-              <td id=""></td>
-
-                </tr>
             {% for job in jobs %}
             <tr>
               <td>
                 <a href="{% url 'main:edit_jobs' job.id %}"><button class="btn btn-primary view-edit-btn" ><i class="fas fa-edit"></i></button></a>
                   <a href="{% url 'main:delete_jobs' job.id %}"><button class="btn btn-primary deleteuser" onclick="return confirm('Are you sure you want to delete this JOb ?');"><i class="far fa-trash-alt"></i></button></a>
               </td>
-              <td id="">
-                  {% for ordergear in job.order.all %}
-                      <div class="row ">
-                  <div class="col-md-3">
-                        {{ordergear.gear.name}}
-                  </div>
-                  <div class="col-md-3">
-                        {{ordergear.gear.size}}
-                  </div>
-                  <div class="col-md-3">
-                        {{ordergear.used_quantity}}
-                  </div>
-                  <div class="col-md-3">
-                        $ {{ordergear.subtotal_price}}
-                  </div>
-               </div>
-                   {% endfor %}
+              <td id="">{{ job.company.site }}</td>
+              <td id="">{{ job.company.name }}
               </td>
-              <td id="">{{ job.company.name }}</td>
-              <td id="">{{ job.date }}</td>
               <td id="">{{ job.total_quantity }}</td>
-              <td id="">$ {{ job.total_price }}</td>
+              <td id="">{{ job.total_weight }}</td>
+              <td id="">{{ job.company.date_for_installation }}</td>
               {% if job.status == "active" %}
                 <td><!-- Button trigger modal -->
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#statusModal">

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Login, index, AddGear, ViewGear, AddJobs, ViewJobs, AddReturned, ViewReturned, EditGear, DeleteGear, EditJobs, DeleteJobs
+from .views import Login, index, AddGear, ViewGear, AddJobs, AddGearNumber, ViewJobs, AddReturned, ViewReturned, EditGear, DeleteGear, EditJobs, DeleteJobs
 from django.contrib.auth import views as auth_views
 app_name = 'main'
 
@@ -14,6 +14,7 @@ urlpatterns = [
     path('view-gear/', ViewGear, name="view_gear"),
     path('edit-gear/<int:id>', EditGear, name="edit_gear"),
     path('delete-gear/<int:id>', DeleteGear, name="delete_gear"),
+    path('add-update-gear/', AddGearNumber, name="add-update-gear"),
 
     path('add-jobs/', AddJobs, name="add_jobs"),
     path('view-jobs/', ViewJobs, name="view_jobs"),

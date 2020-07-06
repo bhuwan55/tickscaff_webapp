@@ -7,26 +7,26 @@ from company.models import Company
 
 class Gear(models.Model):
     name = models.CharField(max_length=50)
-    size = models.CharField(max_length=50)
+    weight = models.DecimalField(max_digits=10, decimal_places=2)
     avail_quantity = models.PositiveIntegerField()
     date = models.DateField(default=date.today)
     image = models.ImageField(null=True, upload_to="images/",blank=True)
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=3)
 
     def __str__(self):
         return self.name
 
 
 class Ordergear(models.Model):
-    gear = models.ForeignKey(Gear, on_delete=models.DO_NOTHING)
+    gear = models.ForeignKey(Gear, on_delete=models.CASCADE)
     used_quantity = models.PositiveIntegerField()
-    subtotal_price = models.DecimalField(max_digits=10, decimal_places=2)
+    subtotal_weight = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 class Returnedgear(models.Model):
-    gear = models.ForeignKey(Gear, on_delete=models.DO_NOTHING)
+    gear = models.ForeignKey(Gear, on_delete=models.CASCADE)
     returned_quantity = models.PositiveIntegerField()
-    fine_price = models.DecimalField(max_digits=10, decimal_places=2)
+    fine_price = models.DecimalField(max_digits=10, decimal_places=3)
     remain_quantity = models.PositiveIntegerField()
 
 
@@ -39,10 +39,10 @@ STATUS_CHOICES = (
 
 class Job(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    status = models.CharField(max_length=50,choices=STATUS_CHOICES, default="active")
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="active")
     order = models.ManyToManyField(Ordergear)
     returned = models.ManyToManyField(Returnedgear)
     date = models.DateField(default=date.today)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2,default=0)
+    total_weight = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_quantity = models.PositiveIntegerField(default=0)
     total_remain_quantity = models.PositiveIntegerField(default=0)

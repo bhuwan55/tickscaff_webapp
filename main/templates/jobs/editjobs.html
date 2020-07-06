@@ -24,18 +24,8 @@
                         <input type="text" class="id" name="return_id" value="{{order.id}}" hidden>
                         <select name="name" class="mx-1 h-50 w-100 ">
                             <option value="{{ order.gear.name }}">{{ order.gear.name }}</option>
-                            {% for gear in  gear %}
+                            {% for gear in  gears %}
                           <option value="{{gear.name}}">{{gear.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="col-md-2">
-                        <label for="size">Size:</label>
-                        <select name="size" class="mx-1 h-50 w-100 ">
-                            <option value="{{ order.gear.size }}">{{ order.gear.size }}</option>
-                            {% for gear in  gear %}
-                          <option value="{{gear.size}}">{{gear.size}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -45,11 +35,16 @@
                         <input type="text" name="used_quantity" id="" class="form-control" value="{{ order.used_quantity }}" required>
                     </div>
 
+                        <div class="col-md-2">
+                        <label for="">Weight:</label>
+                        <input type="text" name="weight" value="{{order.subtotal_weight}}" class="form-control">
+                    </div>
+
                         <button type='button' class='btn remove-row btn-danger mx-2 h-30 my-4' onclick="alert('You deleted a row !!!');">Cancel</button>
                     </div>
                     {% endfor %}
                         <div>
-                            <button class="btn btn-danger add-row"> Add</button>
+                            <button type="button" class="btn btn-danger add-row"> Add</button>
                         </div>
                     </div>
           <br> <br> <br>
@@ -68,16 +63,18 @@
                  </div>
                 <div class="row form-group">
                     <div class="col-md-4">
+                        <label for="total_weight">Total Weight</label>
+                        <input type="total_weight" name="total_weight" id="" class="form-control" value="{{ job.total_weight }}" required>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4">
                         <label for="date">Date</label>
-                        <input type="date" name="date" id="" value="{{ job.date }}"  class="form-control" required>
+                        <input type="text" name="date" id="" value="{{ job.date }}"  class="form-control" required>
                     </div>
 
                 </div>
-<!--                <div class="row form-group">-->
-<!--                    <div class="col-md-4">-->
-<!--                        <label for="total_price">Total Price</label>-->
-<!--                        <input type="total_price" name="total_price" id="total_price" class="form-control" required>-->
-<!--                    </div>-->
+
 <!--                </div>-->
 <!--                    <div class="row form-group">-->
 <!--                    <div class="col-md-4">-->

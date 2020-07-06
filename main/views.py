@@ -33,16 +33,16 @@ def index(request):
 	job_count = Job.objects.all().count()
 	company_count = Company.objects.all().count()
 	active_job_count = Job.objects.filter(status="active").count()
-	latest_gear = Gear.objects.latest('date')
-	latest_job = Job.objects.latest('date')
+	# latest_gear = Gear.objects.latest('date')
+	# latest_job = Job.objects.latest('date')
 
 	context={
 		'gear_count': gear_count,
 		'job_count': job_count,
 		'company_count':company_count,
-		'active_job_count': active_job_count,
-		'latest_gear': latest_gear,
-		'latest_job': latest_job
+		'active_job_count': active_job_count
+		# 'latest_gear': latest_gear,
+		# 'latest_job': latest_job
 	}
 	return render(request, 'main/index.html',context)
 
@@ -51,7 +51,7 @@ def index(request):
 def AddGear(request):
 	if request.method == "POST":
 		name = request.POST.get("name")
-		size = request.POST.get("size")
+		weight = request.POST.get("weight")
 		avail_quantity = request.POST.get("avail_quantity")
 		date = request.POST.get("date")
 		unit_price = request.POST.get("unit_price")
@@ -60,9 +60,9 @@ def AddGear(request):
 		except:
 			image = request.POST.get("image")
 
-		gear = Gear.objects.create(name=name,size=size,avail_quantity=avail_quantity,image=image,date=date,unit_price=unit_price)
+		gear = Gear.objects.create(name=name,weight=weight,avail_quantity=avail_quantity,image=image,date=date,unit_price=unit_price)
 		gear.save()
-		return redirect('view_gear')
+		return redirect('main:view_gear')
 
 	return render(request, 'gear/addgear.html',{})
 
@@ -72,7 +72,7 @@ def EditGear(request, id):
 	gear = Gear.objects.get(id=id)
 	if request.method == "POST":
 		name = request.POST.get("name")
-		size = request.POST.get("size")
+		weight = request.POST.get("weight")
 		avail_quantity = request.POST.get("avail_quantity")
 		date = request.POST.get("date")
 		unit_price = request.POST.get("unit_price")
@@ -83,10 +83,8 @@ def EditGear(request, id):
 			image = request.POST.get("image")
 
 		gear.name = name
-		gear.size = size
+		gear.weight = weight
 		gear.avail_quantity = avail_quantity
-		gear.date = date
-		gear.unit_price = unit_price
 		gear.save()
 
 	return render(request,'gear/editgear.html', {'gear': gear})
@@ -99,55 +97,67 @@ def DeleteGear(request, id):
 
 
 def ViewGear(request):
-	gear = Gear.objects.all()
+	gear = Gear.objects.all().order_by('id')
 	return render(request,'gear/viewgear.html',{'gear':gear,})
 
+
+def AddGearNumber(request):
+	gear = Gear.objects.all().order_by('id')
+	if request.method == "POST":
+		id = request.POST.getlist("id")
+		avail_quantity = request.POST.getlist('quantity')
+
+		i = 0
+		for id in id:
+			if int(avail_quantity[i]) > 0:
+				current_gear = Gear.objects.get(id=id)
+				current_gear.avail_quantity = current_gear.avail_quantity + int(avail_quantity[i])
+				current_gear.save()
+			i=i+1
+
+	return render(request, 'gear/addupdategear.html', {'gear':gear})
 
 
 # --------------------------------------CRUD of JOb-------------------------------------------------------
 def AddJobs(request):
-	gear = Gear.objects.all()
+	gear = Gear.objects.all().order_by("id")
 	company = Company.objects.all()
+
 	if request.method == "POST":
-		gear1 = request.POST.getlist('name')
-		size = request.POST.getlist('size')
-		used_quantity = request.POST.getlist('used_quantity')
+		id = request.POST.getlist('id')
+		used_quantity = request.POST.getlist('quantity')
+
 		company_id = request.POST.get('company')
 		company = Company.objects.get(id=company_id)
 
-		job = Job.objects.create(date = request.POST.get("date"),company=company)
+		job = Job.objects.create(date = request.POST.get("date"), company=company)
 
 		i = 0
-		total_price = 0
+		total_weight = 0
 		total_quantity = 0
-		for gear1 in gear1:
-			id, name = gear1.split(',')
-			try:
-				ordered_gear = Gear.objects.get(name=name,size=size[i])
-			except Gear.DoesNotExist:
-				message = " Size doesnot exists for selected Gear "
-				job.delete()
-				return render(request, 'jobs/addjobs.html', {'gear':gear,'message':message})
-				pass
+		for id in id:
+			if int(used_quantity[i]) > 0:
+				ordered_gear = Gear.objects.get(id = id)
 
-			ordered_gear.avail_quantity = ordered_gear.avail_quantity - int(used_quantity[i])
-			ordered_gear.save()
+				ordered_gear.avail_quantity = ordered_gear.avail_quantity - int(used_quantity[i])
+				ordered_gear.save()
 
-			subtotal_price = float(used_quantity[i]) * float(ordered_gear.unit_price)
+				subtotal_weight = float(used_quantity[i]) * float(ordered_gear.weight)
 
-			total_quantity = total_quantity + int(used_quantity[i])
-			total_price = total_price + subtotal_price
+				total_quantity = total_quantity + int(used_quantity[i])
+				total_weight = total_weight + subtotal_weight
 
-			orderobj = Ordergear.objects.create(gear=ordered_gear,used_quantity=used_quantity[i],subtotal_price=subtotal_price)
-			orderobj.save()
+				orderobj = Ordergear.objects.create(gear=ordered_gear,used_quantity=used_quantity[i],subtotal_weight=subtotal_weight)
+				orderobj.save()
+				job.order.add(orderobj)
 			i = i+1
-			job.order.add(orderobj)
+
 		job.total_quantity = total_quantity
-		job.total_price = total_price
+		job.total_weight = total_weight
 		job.save()
 		return redirect('main:view_jobs')
 
-	return render(request, 'jobs/addjobs.html',{'gear':gear,'company':company})
+	return render(request, 'jobs/addupdatejobs.html',{'gear':gear,'company':company})
 
 
 def ViewJobs(request):
@@ -171,11 +181,10 @@ def ViewJobs(request):
 def EditJobs(request, id):
 	job = Job.objects.get(id=id)
 	companies = Company.objects.all()
-	gear = Gear.objects.all()
+	gears = Gear.objects.all()
 
 	if request.method == "POST":
-		name = request.POST.getlist('name')
-		size = request.POST.getlist('size')
+		id = request.POST.getlist('id')
 		used_quantity = request.POST.getlist('used_quantity')
 		return_id = request.POST.getlist('return_id')
 		company_id = request.POST.get("company")
@@ -198,15 +207,10 @@ def EditJobs(request, id):
 				orderobjs.delete()
 
 		i = 0
-		total_price = 0
+		total_weight = 0
 		total_quantity = 0
-		for name in name:
-			try:
-				ordered_gear = Gear.objects.get(name=name,size=size[i])
-			except Gear.DoesNotExist:
-				message = "Gear provide gear information doesnot exists"
-				return render(request, 'jobs/addjobs.html', {'message':message})
-				pass
+		for id in id:
+			ordered_gear = Gear.objects.get(id=id)
 
 #------------------------------update existing-gear-values------------------------------------------------
 			if int(return_id[i]) > 0:
@@ -223,42 +227,47 @@ def EditJobs(request, id):
 					orderobj.used_quantity = used_quantity[i]
 					orderobj.save()
 
-				subtotal_price = float(used_quantity[i]) * float(ordered_gear.unit_price)
+				subtotal_weight = float(used_quantity[i]) * float(ordered_gear.weight)
 
 				total_quantity = total_quantity + int(used_quantity[i])
-				total_price = total_price + subtotal_price
+				total_weight = total_weight + subtotal_weight
 
-				orderobj.subtotal_price = subtotal_price
+				orderobj.subtotal_weight = subtotal_weight
 				orderobj.save()
 # ------------------------------Create new-gear order------------------------------------------------
 			else:
 				ordered_gear.avail_quantity = ordered_gear.avail_quantity - int(used_quantity[i])
 				ordered_gear.save()
 
-				subtotal_price = float(used_quantity[i]) * float(ordered_gear.unit_price)
+				subtotal_weight = float(used_quantity[i]) * float(ordered_gear.weight)
 
 				total_quantity = total_quantity + int(used_quantity[i])
-				total_price = total_price + subtotal_price
+				total_weight = total_weight + subtotal_weight
 
 				orderobj = Ordergear.objects.create(gear=ordered_gear, used_quantity=used_quantity[i],
-													subtotal_price=subtotal_price)
+													subtotal_weight=subtotal_weight)
 				orderobj.save()
 				job.order.add(orderobj)
 				job.save()
 			i = i + 1
 
 		job.total_quantity = total_quantity
-		job.total_price = total_price
+		job.total_weight = total_weight
 		job.save()
 
-	return render(request, 'jobs/editjobs.html', {'job':job, 'companies':companies,'gear':gear})
+	return render(request, 'jobs/editjobs.html', {'job':job, 'companies':companies,'gears':gears})
 
 
-def DeleteJobs(request,id):
+def DeleteJobs(request, id):
 	job = Job.objects.get(id=id)
-	for order in job.order.all:
-		orderobj = Ordergear.objects.get(id=order.id)
-		orderobj.delete()
+	if job.order:
+		for order in job.order.all():
+			orderobj = Ordergear.objects.get(id=order.id)
+			orderobj.delete()
+	if job.returned:
+		for returned in job.returned.all():
+			orderobj = Returnedgear.objects.get(id=returned.id)
+			orderobj.delete()
 	job.delete()
 	return redirect('main:view_jobs')
 
@@ -268,17 +277,15 @@ def DeleteJobs(request,id):
 def AddReturned(request, id):
 	job = Job.objects.get(id=id)
 	if request.method == "POST":
-		name = request.POST.getlist('name')
-		size = request.POST.getlist('size')
+		id = request.POST.getlist('id')
 		returned_quantity = request.POST.getlist('returned_quantity')
 		used_quantity = request.POST.getlist('used_quantity')
 
 		i = 0
-		fine_price = 0
 		total_remain_quantity = 0
 
-		for name in name:
-			ordered_gear = Gear.objects.get(name=name , size=size[i])
+		for id in id:
+			ordered_gear = Gear.objects.get(id = id)
 
 			ordered_gear.avail_quantity = ordered_gear.avail_quantity + int(returned_quantity[i])
 			ordered_gear.save()
@@ -287,10 +294,7 @@ def AddReturned(request, id):
 
 			total_remain_quantity = total_remain_quantity + remain_quantity
 
-			fine_price = fine_price + 0.1 * (remain_quantity) * float(ordered_gear.unit_price)
-
-			returnobj = Returnedgear.objects.create(gear=ordered_gear, returned_quantity=returned_quantity[i],
-												fine_price=fine_price,remain_quantity=remain_quantity)
+			returnobj = Returnedgear.objects.create(gear=ordered_gear, returned_quantity=returned_quantity[i],remain_quantity=remain_quantity,fine_price = 0)
 			returnobj.save()
 			i = i + 1
 			job.returned.add(returnobj)
@@ -304,16 +308,14 @@ def AddReturned(request, id):
 def ViewReturned(request,id):
 	job = Job.objects.get(id=id)
 	if request.method == "POST":
-		name = request.POST.getlist('name')
-		size = request.POST.getlist('size')
+		id = request.POST.getlist('id')
 		returned_quantity = request.POST.getlist('returned_quantity')
 		return_id = request.POST.getlist('return_id')
 
 		i = 0
 		total_remain_quantity = 0
-		fine_price = 0
-		for name in name:
-			ordered_gear = Gear.objects.get(name=name, size=size[i])
+		for id in id:
+			ordered_gear = Gear.objects.get(id=id)
 			returnobj = Returnedgear.objects.get(id=return_id[i])
 			used_quantity = returnobj.returned_quantity + returnobj.remain_quantity
 
@@ -338,8 +340,6 @@ def ViewReturned(request,id):
 					returnobj.save()
 
 			total_remain_quantity = total_remain_quantity + returnobj.remain_quantity
-
-			fine_price = fine_price + 0.1 * (returnobj.remain_quantity) * float(ordered_gear.unit_price)
 			i = i + 1
 
 		job.total_remain_quantity = total_remain_quantity
