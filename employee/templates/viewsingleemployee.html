@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+
+{% block container %}
+<main class="page-content">
+  <div class="container-fluid">
+    <div class="row headingtitle">
+        <h3>Name of Employee  :  {{ employee.name }}</h3>
+    </div>
+      <div class="text-center">
+        <h4>Total Hours  :  {{ employee.total_hours }}</h4>
+      </div>
+      <br>
+      <form action="{% url 'employee:change_month' employee.id %}" method="POST">
+          {% csrf_token %}
+          <div class="row form-group">
+            <div class="col-md-4">
+            <button type="submit" name="x" value="-1" class="btn btn-danger"><--previous month</button>&nbsp;&nbsp;
+        </div>
+      <div class="col-md-4">
+            <input type="month" name="month" value="{{today|date:'Y-m'}}" class="form-control" readonly>
+        </div>
+      <div class="col-md-4">
+            <button type="submit" name="x" value="1" class="btn btn-danger">next month--></button>
+        </div>
+        </div>
+      </form>
+    <br>
+
+
+    <div class="scroller">
+        <table class="table table-striped" id="myTable">
+          <thead>
+          <th></th>
+            <th>Date</th>
+            <th>Arrival Time</th>
+            <th>Sign off Time</th>
+            <th>Hours</th>
+          </thead>
+          <tbody>
+          {% for work in works %}
+            <tr>
+                <td>
+                    <a href="{% url 'employee:edit_work' work.id %}"><button class="btn btn-primary view-edit-btn" ><i class="fas fa-edit"></i></button></a>
+                    <a href="{% url 'employee:delete_work' work.id %}"><button class="btn btn-primary deleteuser" onclick="return confirm('Are you sure you want to delete this row ?');"><i class="far fa-trash-alt"></i></button></a>
+                </td>
+              <td>
+                  {{ work.date }}
+              </td>
+              <td id="">{{ work.arrival_time }} </td>
+              <td id="">{{ work.signoff_time }} </td>
+              <td id="">{{ work.hours }}</td>
+            </tr>
+          {% endfor %}
+          <form action="{% url 'employee:view_single_employee' employee.id %}" method="POST">
+                    {% csrf_token %}
+                <tr>
+                <td>
+                    <input type="month" name="month" value="{{today|date:'Y-m'}}" class="form-control" hidden>
+                </td>
+                <td>
+                    <input type="Date" name="date" class="form-control" required>
+                </td>
+                <td>
+                    <input type="time" name="arrival_time" class="form-control" required>
+                </td>
+                <td>
+                    <input type="time" name="signoff_time" class="form-control" required>
+                </td>
+                <td>
+                    <button type="submit" style="" class="btn btn-success">Add</button>
+                </td>
+            </tr>
+            </form>
+          </tbody>
+        </table>
+
+    </div>
+  </div>
+</main>
+{% endblock %}

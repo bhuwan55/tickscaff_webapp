@@ -1,7 +1,5 @@
 from django.db import models
 from datetime import date
-from company.models import Company
-
 # Create your models here.
 
 
@@ -12,6 +10,7 @@ class Gear(models.Model):
     date = models.DateField(default=date.today)
     image = models.ImageField(null=True, upload_to="images/",blank=True)
     unit_price = models.DecimalField(max_digits=10, decimal_places=3)
+    total_weight = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return self.name
@@ -38,11 +37,12 @@ STATUS_CHOICES = (
 
 
 class Job(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="active")
     order = models.ManyToManyField(Ordergear)
     returned = models.ManyToManyField(Returnedgear)
-    date = models.DateField(default=date.today)
     total_weight = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_quantity = models.PositiveIntegerField(default=0)
     total_remain_quantity = models.PositiveIntegerField(default=0)
+    site = models.CharField(max_length=100)
+    date_for_installation = models.DateField(default=date.today)
+

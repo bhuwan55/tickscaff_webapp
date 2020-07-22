@@ -17,26 +17,43 @@
                     {% if message %}
                     <h3 style="color:red" >{{ message }}</h3>
                     {% endif %}
-                    {% for order in job.order.all %}
+                    <div class="row form-group">
+                        <div class="col-md-7">
+                        <h5>Gear List</h5>
+                            </div>
+                    </div>
+
                     <div class="row form-group clone">
                     <div class="col-md-2">
-                        <label for="name">Name:</label>
+                        <label for="">Product Description:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="">Weight:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="">Quantity Taken:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="">Quantity Returned:</label>
+                    </div>
+                    </div>
+
+                    {% for order in orders %}
+                    <div class="row form-group clone">
+                    <div class="col-md-2">
                         <input type="text" name="id" id="" class="form-control" value="{{ order.gear.id }}" hidden>
                         <input type="text" name="name" id="" class="form-control" value="{{ order.gear.name }}" readonly>
                     </div>
 
                     <div class="col-md-2">
-                        <label for="size">Weight:</label>
                         <input type="text" name="weight" id="" class="form-control" value="{{ order.subtotal_weight }}" readonly>
                     </div>
 
                      <div class="col-md-2">
-                        <label for="used_quantity">Quantity Taken:</label>
                         <input type="text" name="used_quantity" id="" class="form-control" value="{{ order.used_quantity }}" readonly>
                     </div>
 
                     <div class="col-md-2">
-                        <label for="used_quantity">Quantity Returned:</label>
                         <input type="text" name="returned_quantity" id="" class="form-control" value="{{ order.used_quantity }}" required>
                     </div>
                     </div>

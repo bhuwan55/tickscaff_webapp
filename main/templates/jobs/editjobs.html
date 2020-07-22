@@ -6,7 +6,7 @@
    <main class="page-content">
       <div class="container-fluid">
         <div class="row headingtitle">
-              <h3>Return Form</h3>
+              <h3>Gear List</h3>
             </div>
               <div class="addStaff-Form">
                 <form method="post" action="#" class="myform" enctype="multipart/form-data" >
@@ -14,74 +14,44 @@
                     <div class="row form-group">
                         <h4 class="col px-md-0"></h4>
                     </div>
-                    {% if message %}
-                    <h3 style="color:red" >{{ message }}</h3>
-                    {% endif %}
-                    {% for order in job.order.all %}
-                    <div class="row form-group clone">
-                    <div class="col-md-2">
-                        <label for="name">Name:</label>
-                        <input type="text" class="id" name="return_id" value="{{order.id}}" hidden>
-                        <select name="name" class="mx-1 h-50 w-100 ">
-                            <option value="{{ order.gear.name }}">{{ order.gear.name }}</option>
-                            {% for gear in  gears %}
-                          <option value="{{gear.name}}">{{gear.name}}</option>
-                            {% endfor %}
-                        </select>
+                    <div class="row form-group">
+                        <div class="col-md-7">
+                        <h5></h5>
+                            </div>
+                    </div>
+                    <div class="row form-group">
+                    <div class="col-md-3">
+                        <label for="">Product Description:</label>
                     </div>
 
-                     <div class="col-md-2">
-                        <label for="used_quantity">Quantity:</label>
-                        <input type="text" name="used_quantity" id="" class="form-control" value="{{ order.used_quantity }}" required>
-                    </div>
-
-                        <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="">Weight:</label>
-                        <input type="text" name="weight" value="{{order.subtotal_weight}}" class="form-control">
                     </div>
 
-                        <button type='button' class='btn remove-row btn-danger mx-2 h-30 my-4' onclick="alert('You deleted a row !!!');">Cancel</button>
+                     <div class="col-md-3">
+                        <label for="">Quantity:</label>
+                    </div>
+                    </div>
+                    <div class="row form-group clone">
+                    {% for order in orders %}
+                    <div class="row form-group clone">
+                    <div class="col-md-4">
+                        <input type="text" name="id" value="{{ order.gear.id }}" hidden>
+                        <input type="text" name="name" id="" class="form-control" value="{{ order.gear.name }}" readonly>
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text" name="weight" id="" class="form-control" value="{{ order.subtotal_weight }}" readonly>
+                    </div>
+
+                     <div class="col-md-4 content">
+                         <input type="text" name="return_id" value="{{ order.id }}" hidden>
+                        <input type="text" name="used_quantity" id="" value="{{ order.used_quantity }}" class="input1 form-control" required>
+                     </div>
                     </div>
                     {% endfor %}
-                        <div>
-                            <button type="button" class="btn btn-danger add-row"> Add</button>
-                        </div>
                     </div>
           <br> <br> <br>
-
-                <div class="row form-group">
-                    <div class="col-md-4">
-                        <label for="company_name">Company Name:</label>
-                        <select name="company" class="mx-1 h-50 w-100 ">
-                            <option value="{{ job.company.id }}">{{ job.company.name }}</option>
-                            {% for company in  companies %}
-                          <option value="{{company.id}}">{{company.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                 </div>
-                <div class="row form-group">
-                    <div class="col-md-4">
-                        <label for="total_weight">Total Weight</label>
-                        <input type="total_weight" name="total_weight" id="" class="form-control" value="{{ job.total_weight }}" required>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-md-4">
-                        <label for="date">Date</label>
-                        <input type="text" name="date" id="" value="{{ job.date }}"  class="form-control" required>
-                    </div>
-
-                </div>
-
-<!--                </div>-->
-<!--                    <div class="row form-group">-->
-<!--                    <div class="col-md-4">-->
-<!--                        <label for="total_quantity">Total Quantity</label>-->
-<!--                        <input type="text" name="total_quantity" id="total_quantity" class="form-control">-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div class="row form-group">
                 <div class="col-md-12">
                     <div class="row form-group">
@@ -89,7 +59,7 @@
                     <button class="btn btn-warning" type="submit" >Edit</button>
                 </div>
                 <div class="col-md-2">
-                 <a href="{% url 'main:view_jobs' %}">
+                 <a href="{% url 'company:edit_company' company.id %}">
                     <button type="button" class="btn btn-danger" >Close
                      </button>
                 </a>

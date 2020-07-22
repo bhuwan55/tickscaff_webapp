@@ -8,13 +8,13 @@
     </div>
     <div class="text-center">
         <div class="row add">
-            <a href="{% url 'main:add_jobs' %}"> <button  class="btn btn-primary">Create Job</button> </a>
+            <a href="{% url 'company:add_company' %}"> <button  class="btn btn-primary">Create Job</button> </a>
         </div>
-        <input type="text" placeholder="Filter" class='table-search-user' data-table-search="myTable" />
-        <select class="form-control searchid" id="dropdownList">
-            <option value="orderid">By User Name</option>
-            <option value="phone">By City</option>
-        </select>
+<!--        <input type="text" placeholder="Filter" class='table-search-user' data-table-search="myTable" />-->
+<!--        <select class="form-control searchid" id="dropdownList">-->
+<!--            <option value="orderid">By User Name</option>-->
+<!--            <option value="phone">By City</option>-->
+<!--        </select>-->
     </div>
     <div class="scroller">
         <table class="table table-striped" id="myTable">
@@ -34,12 +34,14 @@
                 <a href="{% url 'main:edit_jobs' job.id %}"><button class="btn btn-primary view-edit-btn" ><i class="fas fa-edit"></i></button></a>
                   <a href="{% url 'main:delete_jobs' job.id %}"><button class="btn btn-primary deleteuser" onclick="return confirm('Are you sure you want to delete this JOb ?');"><i class="far fa-trash-alt"></i></button></a>
               </td>
-              <td id="">{{ job.company.site }}</td>
-              <td id="">{{ job.company.name }}
+              <td id="">{{ job.site }}</td>
+              <td id="">{% for company in job.company_set.all %}
+                              {{company.name}}
+                          {% endfor %}
               </td>
               <td id="">{{ job.total_quantity }}</td>
               <td id="">{{ job.total_weight }}</td>
-              <td id="">{{ job.company.date_for_installation }}</td>
+              <td id="">{{ job.date_for_installation }}</td>
               {% if job.status == "active" %}
                 <td><!-- Button trigger modal -->
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#statusModal">

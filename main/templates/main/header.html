@@ -59,7 +59,7 @@
           </a>
           <div class="sidebar-submenu">
             <ul>
-              <li><a href="{% url 'main:add_jobs' %}">Create Job</a></li>
+              <li><a href="{% url 'company:add_company' %}">Create Job</a></li>
               <li><a href="{% url 'main:view_jobs' %}">All Jobs</a></li>
             </ul>
           </div>
@@ -77,15 +77,25 @@
             </ul>
           </div>
         </li>
+
+        <li class="sidebar-dropdown">
+          <a href="#">
+            <i class="zmdi zmdi-account-box"></i>
+            <span>Employee</span>
+          </a>
+          <div class="sidebar-submenu">
+            <ul>
+              <li><a href="{% url 'employee:add_employee' %}">Add Employee</a></li>
+              <li><a href="{% url 'employee:view_employee' %}">All Employee</a></li>
+            </ul>
+          </div>
+        </li>
         <!-- sidebar-menu  -->
 
         <!-- sidebar-content  -->
   </nav>
 </aside>
-<div class="header">
-  <div class="header-background">
-      <h3>Dashboard</h3>
-  </div>
+
 
 
   <div class="logout">

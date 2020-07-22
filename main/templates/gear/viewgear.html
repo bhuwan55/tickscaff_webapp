@@ -10,11 +10,11 @@
         <div class="row add">
             <a href="{% url 'main:add-update-gear' %}"> <button  class="btn btn-primary">Add Gears</button> </a>
         </div>
-        <input type="text" placeholder="Filter" class='table-search-user' data-table-search="myTable" />
-        <select class="form-control searchid" id="dropdownList">
-            <option value="orderid">By Name</option>
-            <option value="phone">By Size</option>
-        </select>
+<!--        <input type="text" placeholder="Filter" class='table-search-user' data-table-search="myTable" />-->
+<!--        <select class="form-control searchid" id="dropdownList">-->
+<!--            <option value="orderid">By Name</option>-->
+<!--            <option value="phone">By Size</option>-->
+<!--        </select>-->
     </div>
     <div class="scroller">
         <table class="table table-striped" id="myTable">
@@ -22,7 +22,7 @@
             <th></th>
             <th>Product Description</th>
             <th>Quantity</th>
-            <th>weight</th>
+            <th>Total weight</th>
             <th>Added Date</th>
             <th>Image</th>
           </thead>
@@ -35,7 +35,7 @@
               </td>
               <td id="">{{ gear.name }}</td>
               <td id="">{{ gear.avail_quantity }}</td>
-              <td id="">{{ gear.weight }}</td>
+              <td id="">{{ gear.total_weight }}</td>
               <td id="">{{ gear.date }}</td>
               <td id=""><a href="#"><img src="/media/{{ gear.image }}" style="width:80px;height:80px;" alt=""></a></td>
             </tr>

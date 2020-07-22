@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% block container %}
+<main class="page-content">
+  <div class="container-fluid">
+    <div class="row headingtitle">
+        <h3>Edit Work</h3>
+    </div>
+      <br>
+      <form action="" method="POST">
+                    {% csrf_token %}
+      <div class="row form-group">
+            <div class="col-md-3">
+                    <label for="">Date</label>
+                <input type="text" name="id" value="{{work.id}}" class="form-control" readonly hidden>
+                    <input type="Date" name="date" value="{{ work.date|date:'Y-m-d' }}" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+                    <label for="">Arrival Time</label>
+                    <input type="time" name="arrival_time" value="{{ work.arrival_time|time:'H:i' }}" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+                    <label for="">SignOff Time</label>
+                    <input type="time" name="signoff_time" value="{{ work.signoff_time|time:'H:i' }}" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+                    <button type="submit" style="margin-top:30px;" class="btn btn-success">Edit</button>
+            </div>
+      </div>
+      </form>
+    </div>
+</main>
+{% endblock %}
