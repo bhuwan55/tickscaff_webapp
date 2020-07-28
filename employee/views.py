@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Employee, Work
 import datetime
+from datetime import timedelta
 
 
 # Create your views here.
@@ -22,6 +23,10 @@ def ViewEmployee(request):
 
 def DeleteEmployee(request,id):
     employee = Employee.objects.get(id=id)
+    work = employee.work.all()
+    for work in work:
+        works = Work.objects.get(id=work.id)
+        works.delete()
     employee.delete()
     return redirect('employee:view_employee')
 
@@ -31,7 +36,15 @@ def ViewSingleEmployee(request, id):
     today = datetime.date.today()
     year = today.year
     month= today.month
-    works = employee.work.all().filter(date__year=year, date__month=month)
+
+    todayss = datetime.date.today()
+    start_week = todayss - datetime.timedelta(todayss.weekday()) - datetime.timedelta(days = 4)
+    end_week = start_week + datetime.timedelta(6)
+    works = employee.work.all().filter(date__range=[start_week, end_week])
+    total_hours = employee.total_hours - employee.total_hours
+    for work in works:
+        total_hours = total_hours + work.hours
+
     if request.method == 'POST':
         date = request.POST.get("date")
         arrival_time = request.POST.get("arrival_time")
@@ -63,7 +76,7 @@ def ViewSingleEmployee(request, id):
         employee.save()
         return render(request, 'viewsingleemployee.html', {'employee': employee, 'works': works, 'today': today, })
 
-    return render(request, 'viewsingleemployee.html', {'employee':employee, 'works':works,'today':today,})
+    return render(request, 'viewsingleemployee.html', {'employee':employee, 'works':works,'today':today,'total_hours':total_hours,'start_week':start_week})
 
 
 def DeleteWork(request,id):
@@ -81,34 +94,35 @@ def ChangeMonth(request, id):
     employee = Employee.objects.get(id=id)
     works = employee.work.all()
     today = datetime.date.today()
+
+    todayss = datetime.date.today()
+    start_week = todayss - datetime.timedelta(todayss.weekday()) - datetime.timedelta(days = 4)
+    end_week = start_week + datetime.timedelta(6)
+    works = employee.work.all().filter(date__range=[start_week, end_week])
+    total_hours = employee.total_hours - employee.total_hours
+    for work in works:
+        total_hours = total_hours + work.hours
+
     if request.method == 'POST':
         x = request.POST.get("x")
         todays = request.POST.get("month")
-        year = int(todays[0:4])
-        month = int(todays[5:7])
+        start_weeks = request.POST.get("start_week")
+        year = int(start_weeks[0:4])
+        month = int(start_weeks[5:7])
+        day = int(start_weeks[8:10])
+        start_week = datetime.date(year, month, day)
         if x == '-1':
-            if month == 1:
-                year = year - 1
-                month = 12
-            else:
-                month = month-1
-            today = datetime.date(year,month,1)
+            start_week = start_week - timedelta(days=7)
+            end_week = start_week + datetime.timedelta(6)
         elif x == '1':
-            if month == 12:
-                year = year + 1
-                month = 1
-            else:
-                month = month + 1
-            today = datetime.date(year,month,1)
-        works = employee.work.all().filter(date__year=year, date__month=month)
-    return render(request, 'viewsingleemployee.html', {'employee': employee, 'works': works,'today':today, })
+            start_week = start_week + timedelta(days=7)
+            end_week = start_week + datetime.timedelta(6)
+        works = employee.work.all().filter(date__range=[start_week, end_week])
+        total_hours = total_hours - total_hours
+        for work in works:
+            total_hours = total_hours + work.hours
+    return render(request, 'viewsingleemployee.html', {'employee': employee, 'works': works,'today':today,'start_week':start_week,'total_hours':total_hours})
 
-
-def ResetTotalHours(request,id):
-    employee = Employee.objects.get(id=id)
-    employee.total_hours = '0'
-    employee.save()
-    return redirect('employee:view_employee')
 
 
 def EditWork(request, id):
@@ -129,13 +143,11 @@ def EditWork(request, id):
 
 
         hours = work.get_time_diff()
-        print(hours)
         hr = int(hours[0:2])
         try:
             min = int(hours[9:11])
         except:
             min = 0
-        print(hr,min)
         for employee in employee:
             employee.total_hours = employee.total_hours - work.hours
             employee.save()
@@ -144,7 +156,6 @@ def EditWork(request, id):
         work.save()
 
         employee.total_hours = employee.total_hours + work.hours
-        print(employee.total_hours)
         employee.save()
         return redirect('employee:view_single_employee', id=employee.id)
 

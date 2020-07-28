@@ -7,20 +7,21 @@
         <h3>Name of Employee  :  {{ employee.name }}</h3>
     </div>
       <div class="text-center">
-        <h4>Total Hours  :  {{ employee.total_hours }}</h4>
+        <h4>Total Hours  :  {{ total_hours }}</h4>
       </div>
       <br>
       <form action="{% url 'employee:change_month' employee.id %}" method="POST">
           {% csrf_token %}
           <div class="row form-group">
             <div class="col-md-4">
-            <button type="submit" name="x" value="-1" class="btn btn-danger"><--previous month</button>&nbsp;&nbsp;
+            <button type="submit" name="x" value="-1" class="btn btn-danger"><--previous week</button>&nbsp;&nbsp;
         </div>
       <div class="col-md-4">
-            <input type="month" name="month" value="{{today|date:'Y-m'}}" class="form-control" readonly>
+            <input type="date" name="start_week" value="{{ start_week|date:'Y-m-d' }}" class="form-control" readonly>
+            <input type="month" name="month" value="{{today|date:'Y-m'}}" class="form-control" hidden>
         </div>
       <div class="col-md-4">
-            <button type="submit" name="x" value="1" class="btn btn-danger">next month--></button>
+            <button type="submit" name="x" value="1" class="btn btn-danger">next week--></button>
         </div>
         </div>
       </form>

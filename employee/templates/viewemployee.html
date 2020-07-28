@@ -29,7 +29,7 @@
               <td id="">{{ employee.name }}</td>
                <td id="">{{ employee.total_hours }}</td>
                 <td>
-                  <a href="{% url 'employee:reset_total_hours' employee.id %}"><button class="btn btn-danger" onclick="return confirm('Are you sure you want to reset Total Hours ?');">paid</button></a>
+                  <a href="{% url 'employee:view_single_employee' employee.id %}"><button type="button" class="btn btn-danger">check</button></a>
                 </td>
             </tr>
             {% endfor %}

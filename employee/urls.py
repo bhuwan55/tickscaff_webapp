@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AddEmployee, ViewEmployee, ViewSingleEmployee, DeleteEmployee, DeleteWork, ChangeMonth, ResetTotalHours, EditWork
+from .views import AddEmployee, ViewEmployee, ViewSingleEmployee, DeleteEmployee, DeleteWork, ChangeMonth, EditWork
 app_name = 'employee'
 
 urlpatterns = [
@@ -12,7 +12,5 @@ urlpatterns = [
     path('edit/work/<int:id>', EditWork, name='edit_work'),
 
     path('change/month/<int:id>', ChangeMonth, name='change_month'),
-
-    path('reset/total_hours/<int:id>', ResetTotalHours, name='reset_total_hours'),
 
 ]
