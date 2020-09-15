@@ -1,0 +1,148 @@
+.image{
+    width: 100%;
+    height: auto;
+    max-width: 1400px;
+    padding-right: 5px;
+}
+
+.container {
+    position: relative;
+  }
+
+.h1{
+    position: absolute;
+    top: 50%;
+  left: 75%;
+  transform: translate(-75%, -25%);
+  text-transform: uppercase;
+  color: white;
+  font-size: 30px;
+  letter-spacing: 1px;
+  font-family: calibri;
+}
+
+.b{
+    font-size: 14px;
+}
+
+.column{
+    float: left;
+    width: 48%;
+    padding-top: 30px;
+    
+}
+
+.prelast{
+    font-size: 13px;
+    font-family: Arial;
+    letter-spacing: 1px;
+    padding-left: 80px;
+}
+
+.pre{
+    font-family: arial;
+    font-size: 13px;
+    letter-spacing: 1px;
+    line-height: 2;
+    padding-right: 40px;
+
+}
+
+.center{
+    position: relative;
+    padding-top: 20px;
+}
+
+.p , .desc{
+    padding-left: 80px;
+    padding-right: 40px;
+    font-size: 13px;
+    font-family: Arial;
+    letter-spacing: 1px;
+    line-height: 1.5;
+}
+
+.desc{
+    position: relative;
+    padding-top: 5px;
+}
+
+.imgcenter{
+    width: 100%;
+    height: auto;
+    max-width: 816px;
+    padding-left: 70px;
+}
+
+.h2{
+    position: absolute;
+    bottom: 0.5px;
+    right: 74%;
+    transform: translate(-20%,-35%);
+    font-size: 15px;
+    color: white;
+}
+
+.h3{
+    position: absolute;
+    bottom: 0.5px;
+    right: 69%;
+    transform: translate(-20%,-35%);
+    font-size: 15px;
+    color: white;
+}
+
+@media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+    }
+
+    .col {
+        width: 100%;
+    }
+  }
+
+.list{
+    position: relative;
+    padding-left: 65px;
+    font-size: 13px;
+    font-family: arial;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    padding-top: 10px;
+}
+
+.para{
+    letter-spacing: 1px;
+    padding-top: 20px;
+    padding-left: 80px;
+    font-size: 13px;
+    font-family: arial;  
+    padding-right: 40px; 
+    line-height: 1.6;
+}
+
+.footer{
+    height: auto;
+    width: 100%;
+    max-width: 1400px;
+    padding-top: 18px;
+}
+
+.a4{
+    width: 900px; 
+    max-width: 900px;
+    margin: auto;
+}  
+
+.imageback{
+    position: relative;
+}
+
+.imgback{
+    position: absolute;
+    padding-left: 150px;
+    height: auto;
+    width: 100%;
+    max-width: 600px;
+}

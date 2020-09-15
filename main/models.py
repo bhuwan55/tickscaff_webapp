@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from company.models import Company
 # Create your models here.
 
 
@@ -37,6 +38,7 @@ STATUS_CHOICES = (
 
 
 class Job(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="active")
     order = models.ManyToManyField(Ordergear)
     returned = models.ManyToManyField(Returnedgear)
@@ -45,4 +47,8 @@ class Job(models.Model):
     total_remain_quantity = models.PositiveIntegerField(default=0)
     site = models.CharField(max_length=100)
     date_for_installation = models.DateField(default=date.today)
+    amount_of_bays = models.PositiveIntegerField(default="0")
+    job_type = models.CharField(max_length=50, default="o")
+
+
 

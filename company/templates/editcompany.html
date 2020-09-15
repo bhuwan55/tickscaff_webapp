@@ -11,12 +11,12 @@
               <div class="addStaff-Form">
                 <form method="post" action="#" enctype="multipart/form-data" >
                     {% csrf_token %}
-                    <div class="row form-group">
-                    <div class="col-md-8">
-                        <label for="name">Jobsite Address:</label>
-                        <input type="text" name="job_site" value="{{ company.job.site }}" id="" class="form-control" required>
-                    </div>
-                    </div>
+<!--                    <div class="row form-group">-->
+<!--                    <div class="col-md-8">-->
+<!--                        <label for="name">Jobsite Address:</label>-->
+<!--                        <input type="text" name="job_site" value="{{ company.job.site }}" id="" class="form-control" required>-->
+<!--                    </div>-->
+<!--                    </div>-->
                     <br>
                     <div class="row form-group">
                     <div class="col-md-3">
@@ -49,47 +49,67 @@
                         <label for="">Contact</label>
                         <input type="tel" name="sub_contact" value="{{ company.sub_contact }}" class="form-control" required>
                     </div>
-                    <div class="col-md-2">
-                        <label for="">Amount of Bays</label>
-                        <input type="text" name="amount_of_bays" value="{{ company.amount_of_bays }}" class="form-control" required>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="">Job Type</label>
-                        <input type="text" name="job_type" value="{{ company.amount_of_bays }}" class="form-control" required>
-                    </div>
+<!--                    <div class="col-md-2">-->
+<!--                        <label for="">Amount of Bays</label>-->
+<!--                        <input type="text" name="amount_of_bays" value="{{ company.amount_of_bays }}" class="form-control" required>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-2">-->
+<!--                        <label for="">Job Type</label>-->
+<!--                        <input type="text" name="job_type" value="{{ company.amount_of_bays }}" class="form-control" required>-->
+<!--                    </div>-->
                  </div>
                     <br>
-                    <div class="row form-group">
-                    <div class="col-md-1">
-                        <!-- Button trigger modal -->
-                    <button type="button submit" name="sbtn" value="gear_list" class="btn default" style="border-color: #C0BDBD;" data-toggle="modal" data-target="#exampleModal">
-                        Gear List:
-                    </button>
-                    </div>
-                    </div>
+<!--                    <div class="row form-group">-->
+<!--                    <div class="col-md-1">-->
+<!--                        &lt;!&ndash; Button trigger modal &ndash;&gt;-->
+<!--                    <button type="button submit" name="sbtn" value="gear_list" class="btn default" style="border-color: #C0BDBD;" data-toggle="modal" data-target="#exampleModal">-->
+<!--                        Gear List:-->
+<!--                    </button>-->
+<!--                    </div>-->
+<!--                    </div>-->
 
-                    <div class="row form-group">
-                    <div class="col-md-8">
-                        <div class="col-md-4">
-                        <label for="">Quote:</label><br>
-                        <a href=""><img src="/media/{{ company.quote }}" style="width:280px;height:180px;" alt=""></a><br>
-                        <br>
-                        </div>
-                        <input type="file" name="quote" class="form-control" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps">
-                    </div>
-                </div>
-                    <div class="row form-group">
-                    <div class="col-md-8">
-                        <label for="">Date of Installation</label>
-                        <input type="date" name="job_date_of_installation" value="{{job.date_for_installation|date:'Y-m-d'}}" class="form-control">
-                    </div>
-                </div>
+<!--                    <div class="row form-group">-->
+<!--                    <div class="col-md-8">-->
+<!--                        <div class="col-md-4">-->
+<!--                        <label for="">Quote:</label><br>-->
+<!--                        <a href=""><img src="/media/{{ company.quote }}" style="width:280px;height:180px;" alt=""></a><br>-->
+<!--                        <br>-->
+<!--                        </div>-->
+<!--                        <input type="file" name="quote" class="form-control" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                    <div class="row form-group">-->
+<!--                    <div class="col-md-8">-->
+<!--                        <label for="">Date of Installation</label>-->
+<!--                        <input type="date" name="job_date_of_installation" value="{{job.date_for_installation|date:'Y-m-d'}}" class="form-control">-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="row form-group">
                 <div class="col-md-4">
                     <input type="submit" name="sbtn" value="submit" class="btn btn-primary submit form-control" id="submit_btn">
                 </div>
             </div>
         </form>
+                  <h4>List Of All Jobs For This Company</h4>
+                  <br>
+             <div class="scroller">
+                  <table class="table table-striped" id="myTable">
+                      <thead>
+                            <th>Job Site</th>
+                            <th>Job Date of Installation</th>
+                            <th></th>
+                      </thead>
+                      <tbody>
+                        {% for job in company.job_set.all %}
+                      <tr>
+                        <td>{{ job.site }}</td>
+                        <td>{{ job.date_for_installation }}</td>
+                        <td><a href="{% url 'main:job_detail' job.id %}"><button class="btn btn-primary view-edit-btn" ><i class="fas fa-eye"></i></button></a></td>
+                      </tr>
+                        {% endfor %}
+                        </tbody>
+                  </table>
+             </div>
     </div>
 </div>
 

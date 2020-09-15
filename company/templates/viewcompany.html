@@ -20,11 +20,23 @@
         <table class="table table-striped" id="myTable">
           <thead>
             <th></th>
-            <th>Name</th>
-            <th>Site Address</th>
-            <th>Date of Installation</th>
+            <th>Company Name</th>
+            <th>Jobs</th>
           </thead>
           <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td id="">
+              <table class="table table-striped" id="">
+                  <tr>
+                      <td>Site Address</td>
+                      <td>Date Of Installation</td>
+                      <td></td>
+                  </tr>
+              </table>
+              </td>
+            </tr>
           {% for company in company %}
             <tr>
               <td>
@@ -32,8 +44,17 @@
                   <a href="{% url 'company:delete_company' company.id %}"><button class="btn btn-primary deleteuser" onclick="return confirm('Are you sure you want to delete this gear ?');"><i class="far fa-trash-alt"></i></button></a>
               </td>
               <td id="">{{ company.name }}</td>
-              <td id="">{{ company.job.site }}</td>
-              <td id="">{{ company.job.date_for_installation }}</td>
+              <td id="">
+                  <table class="table table-striped" id="myTable">
+                {% for job in company.job_set.all %}
+                      <tr>
+                        <td>{{ job.site }}</td>
+                        <td>{{ job.date_for_installation }}</td>
+                        <td><a href="{% url 'main:job_detail' job.id %}"><button class="btn btn-primary view-edit-btn" ><i class="fas fa-eye"></i></button></a></td>
+                      </tr>
+                {% endfor %}
+                  </table>
+              </td>
             </tr>
           {% endfor %}
           </tbody>
