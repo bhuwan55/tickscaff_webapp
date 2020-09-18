@@ -2,64 +2,18 @@
 {% load staticfiles %}
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/invoice.css' %}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+            integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+            crossorigin="anonymous"></script>
     <script type="text/javascript" src="{% static 'js/jautocalc/dist/jautocalc.js' %}"></script>
-
-    <script type="text/javascript">
-        function printpage() {
-          //Get the print button and put it into a variable
-          var printButton = document.getElementById("print-button");
-          //Set the print button visibility to 'hidden'
-          printButton.style.visibility = 'hidden';
-          //Print the page content
-          window.print()
-          //Set the print button to 'visible' again
-          //[Delete this line if you want it to stay hidden after printing]
-          printButton.style.visibility = 'visible';
-      }
-
-      $(document).ready(function(){
-
-      function autoCalcSetup() {
-                    $('form[name=table]').jAutoCalc('destroy');
-                    $('form[name=table].tr[name=line]').jAutoCalc({keyEventsFire: true, decimalPlaces: 2, emptyAsZero: true});
-                    $('form[name=table]').jAutoCalc({decimalPlaces: 2});
-                }
-
-
-       $( ".add-row" ).click(function(e){
-          e.preventDefault();
-          var $tablerow = $( ".table-row" ).first().clone();
-<!--          $tablerow.append( "<button type='button' class='btn remove-row btn-danger mx-2 h-30 my-4'>Remove</button>" );-->
-          $tablerow.insertBefore( ".add-row" );
-          $tablerow.jAutoCalc('destroy');
-          autoCalcSetup();
-
-       });
-
-       $( ".myform" ).on("click", ".remove-row", function(e){
-          e.preventDefault();
-          $(this).closest("tr").remove();
-          autoCalcSetup();
-       });
-
-       $( ".subtotal1" ).keyup(function(){
-      var $this = $(this);
-      var subtotal1 = $(this).val();
-      var gst1 = (subtotal1 * 0.1);
-      $this.closest( "tr" ).find('.gst1').val(gst1);
-      var total1 = parseFloat(subtotal1) + parseFloat(gst1);
-      $this.closest( "tr" ).find('.total1').val(total1);
-   });
-
-    });
-
-
-      </script>
+    <script src="./assets/Do-Calculations-Form-Fields-AutoCalc/dist/jautocalc.js"></script>
 </head>
 
 <body class="body">
@@ -69,7 +23,7 @@
 
         <div class="h1">tax invoice</div>
     </div>
-        <form method="post" action="#" class="myform">
+        <form method="post" name="cart" class="myform">
             {% csrf_token %}
     <div class="row">
         <div class="column">
@@ -94,7 +48,7 @@
     </div>
 
     <div class="centered">
-        <table class="table" style="width:100%">
+        <table class="table" name="cart" style="width:100%">
             <tr class="tableheader">
                 <th class="th" style="width: 40%;">Description</th>
                 <th class="th" style="width: 15%;">Qty</th>
@@ -102,18 +56,23 @@
                 <th class="th" style="width: 15%;">gst</th>
                 <th class="th" style="width: 15%;">total</th>
             </tr>
-            <tr name="line" class="table-row">
+            <tr name="line_items" class="table-row">
                 <td class="tabledata" style="width: 40%;"><textarea name="description" id="" cols="50" rows="4">{{ invoice.description1 }}</textarea><br>
                 </td>
                 <td class="tabledata" style="width: 15%;"><textarea name="quantity" cols="20" rows="1">{{ invoice.quote.hire_period }} weeks</textarea></td>
                 <td class="tabledata" style="width: 15%;">$<textarea class="subtotal1" name="subtotal1" cols="8" rows="1">{{ invoice.subtotal1 }}</textarea></td>
-                <td class="tabledata" style="width: 15%;">$<textarea class="gst1" name="gst1" cols="6" rows="1">{{ invoice.gst1 }}</textarea></td>
-                <td class="tabledata" style="width: 15%;">$<textarea class="total1" name="total1" cols="6" rows="1">{{ invoice.total1 }} </textarea></td>
-                <td><button type='button' class='btn remove-row btn-danger mx-2 h-30 my-4'>Remove</button></td>
+                <td class="tabledata" style="width: 15%;">$<textarea class="gst1" name="gst1" jAutoCalc="{subtotal1}*10/100" cols="6" rows="1">{{ invoice.gst1 }}</textarea></td>
+                <td class="tabledata" style="width: 15%;">$<textarea class="total1" name="total1" jAutoCalc="{subtotal1}+{gst1} cols="6" rows="1">{{ invoice.total1 }} </textarea></td>
+                <td><button type='button' name="remove" class='btn remove-row btn-danger mx-2 h-30 my-4'>Remove</button></td>
+            </tr>
+            <tr>
+                <td>
+                <div style="margin-left : 60px;"><button type="button" name="add" class="btn btn-danger add-row" id="add-row" >Add</button></div>
+                </td>
             </tr>
 
             {% if invoice.description2 %}
-            <tr class="table-row">
+            <tr class="table-row" name="line_items">
                 <td class="tabledata" style="width: 40%;"><textarea name="description" id="" cols="50" rows="4">{{ invoice.description2 }}</textarea><br>
                 </td>
                 <td class="tabledata" style="width: 15%;"><textarea name="quantity" cols="20" rows="1">{{ invoice.quantity2 }}</textarea></td>
@@ -125,7 +84,7 @@
             {% endif %}
 
             {% if invoice.description3 %}
-            <tr class="table-row">
+            <tr class="table-row" name="line_items">
                 <td class="tabledata" style="width: 40%;"><textarea name="description" id="" cols="50" rows="4">{{ invoice.description3 }}</textarea><br>
                 </td>
                 <td class="tabledata" style="width: 15%;"><textarea  name="quantity" cols="20" rows="1">{{ invoice.quantity3 }}</textarea></td>
@@ -137,7 +96,7 @@
             {% endif %}
         </table>
 
-        <div style="margin-left : 60px;"><button type="button" class="btn btn-danger add-row" id="add-row" >Add</button></div>
+
     <div class="center">
         <p class="p"><b>SUBTOTAL $(<input type="text" class="subtotal" name="subtotal" jAutoCalc="SUM({subtotal1})" value="{{ invoice.subtotal }}">)</b></p>
         <img class="imgcenter" src="{% static 'images/center.png' %}" alt="" style="height: 40px;">
@@ -146,7 +105,7 @@
                 <div class="h2"><b>HOW TO PAY?</b></div>
             </div>
             <div class="colcenter">
-                <div class="h3"><b> GST $(<input class="gst" type="text" name="gst" value="{{ invoice.gst }}">)</b></div>
+                <div class="h3"><b> GST $(<input class="gst" type="text" name="gst" jAutoCalc="SUM({gst1}) value="{{ invoice.gst }}">)</b></div>
             </div>
         </div>
     </div>
@@ -163,7 +122,7 @@
         </div>
         <div class="col">
             <pre class="pre">
-                <b>TOTAL      ($ <input class="total" type="text" name="total" value="{{ invoice.total }}">)</b>
+                <b>TOTAL      ($ <input class="total" type="text" name="total" jAutoCalc="SUM({total1}) value="{{ invoice.total }}">)</b>
             </pre>
         </div>
     </div>
@@ -176,4 +135,32 @@
             </form>
 </div>
 </body>
+<script type="text/javascript">
+    function autoCalcSetup() {
+        $('table[name=cart]').jAutoCalc('destroy');
+        $('table[name=cart] tr[name=line_items]').jAutoCalc({ keyEventsFire: true, decimalPlaces: 2, emptyAsZero: true });
+        $('table[name=cart]').jAutoCalc({ decimalPlaces: 2 });
+    }
+    autoCalcSetup();
+
+    $('button[name=add]').click(function(e){
+        e.preventDefault();
+        alert("Do you want to add");
+        var $table = $(this).parents('table');
+        var $top = $table.find('tr[name=line_items]').first();
+        var $new = $top.clone(true);
+        $new.jAutoCalc('destroy');
+        $new.insertBefore($top);
+        $new.find('input[type=text]').val();
+        autoCalcSetup();
+
+    });
+    $('button[name=remove]').click(function(e) {
+        e.preventDefault();
+        alert("Do you want to remove");
+        var form = $(this).parents('form');
+        $(this).parents('tr').remove();
+        autoCalcSetup();
+    });
+</script>
 </html>
