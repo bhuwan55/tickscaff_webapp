@@ -35,10 +35,7 @@
                   <a href="{% url 'main:delete_jobs' job.id %}"><button class="btn btn-primary deleteuser" onclick="return confirm('Are you sure you want to delete this JOb ?');"><i class="far fa-trash-alt"></i></button></a>
               </td>
               <td id="">{{ job.site }}</td>
-              <td id="">{% for company in job.company_set.all %}
-                              {{company.name}}
-                          {% endfor %}
-              </td>
+              <td id="">{{job.company.name}}</td>
               <td id="">{{ job.total_quantity }}</td>
               <td id="">{{ job.total_weight }}</td>
               <td id="">{{ job.date_for_installation }}</td>

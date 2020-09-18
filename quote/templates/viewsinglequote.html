@@ -1,0 +1,184 @@
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/quote.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.company').select2({
+        tags: true
+        });
+});
+
+        function printpage() {
+            //Get the print button and put it into a variable
+            var printButton = document.getElementById("print-button");
+            var editButton = document.getElementById("edit-button");
+            var invoiceButton = document.getElementById("invoice-button");
+            //Set the print button visibility to 'hidden'
+            printButton.style.visibility = 'hidden';
+            editButton.style.visibility = 'hidden';
+            invoiceButton.style.visibility = 'hidden';
+            //Print the page content
+            window.print()
+            //Set the print button to 'visible' again
+            //[Delete this line if you want it to stay hidden after printing]
+            printButton.style.visibility = 'visible';
+            editButton.style.visibility = 'visible';
+            invoiceButton.style.visibility = 'visible';
+        }
+    </script>
+</head>
+
+<body class="body">
+
+    <div class="container a4 ">
+
+        <div class="container">
+            <img class="image" src="{% static 'images/header.png' %}" alt="" style="height: 150px;">
+
+            <div class="h1">quotation</div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <pre class="pre">
+                <b class="b">Date</b>     {{quote.job.date_for_installation}}
+
+                <b class="b">To</b>        {{quote.job.company.name}}
+                <b class="b">SITE</b>    {{ quote.job.site }}
+            </pre>
+            </div>
+            <div class="column">
+                <pre class="pre">
+
+
+            <b class="b">PHONE</b>      0450 405 743
+            <b class="b">EMAIL</b>       Info@tickscaffold.com.au
+            <b class="b">ABN</b>          72 630 733 756
+            <b class="b">ADDRESS</b> 28 Ainslie Rd Campbellfield Vic 3061
+
+            </pre>
+            </div>
+        </div>
+
+        <div class="centered">
+            <p class="p">Dear {{quote.job.company.builder_name}}  <br><br>Please find below the scope of work and quotation
+                for the scaffold you have required. If you have any question please feel free to contact us.
+            </p>
+        </div>
+        <div class="container imageback">
+
+        <div class="center">
+            <img class="imgcenter" src="{% static 'images/center.png' %}" alt="" style="height: 35px;">
+            <div class="row">
+                <div class="colcenter">
+                    <div class="h2"><b>JOB DESCRIPION:</b></div>
+                    <div class="background">
+                        <img class="imgback" src="{% static 'images/s.png' %}" alt="" height="200px">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+            <div class="row">
+                <div class="col">
+                    <p class="desc">Supply, carry, dismantle, deliver and erect K-stage scaffold and components all
+                        around
+                        the job site to provide {{ quote.description1 }}
+                        <br>
+                        <br>
+                        Scaffolding will compromise of approx {{ quote.description2 }}
+                        <br>
+                        <br>
+                        {{ quote.description3 }}
+                        Scaffold
+                        will be supplied in accordance with AS/NZS1576:2010 and erected in accordance with
+                        AS/NZS4576:1995.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="center">
+            <img class="imgcenter" src="{% static 'images/cen.png' %}" alt="" style="height: 35px;">
+            <div class="row">
+                <div class="scope">
+                    <div class="h3"><b>SCOPE OF THE WORK:</b></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="list">
+                <ul class="unlist">
+                    <li>Delivery to the Site</li>
+                    <li>Carry</li>
+                    <li>Erect</li>
+                    <li>Dismantle</li>
+                    <li>Gather Scaffold</li>
+                    <li>Delivery from Site</li>
+                    <li>{{ quote.hire_period }} weeks Hire</li>
+                    {% if quote.new_scope %}
+                    <li>{{ quote.new_scope }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="para">
+                <p class="par">Therefore the total cost of the job will be ${{ quote.subtotal }} plus GST, if the scaffold is needed
+                    for a longer
+                    period then the {{ quote.hire_period }} weeks, there will be a weekly rental of ${{ quote.gst }} plus GST. {{ quote.scope_end }}
+                    </p>
+            </div>
+
+            <div class="column collast">
+                <p class="prelast">
+                    You're sincerely
+                    <br>
+                    <br>
+                    <br>
+                    Sam. J
+                    <br>
+                    <br>
+                    Tick Scaffold Pty Ltd
+                </p>
+                <!-- <pre class="prelast">
+                    You're sincerely
+
+
+                    Sam. J
+
+                    Tick Scaffold Pty Ltd
+
+                </pre> -->
+            </div>
+        </div>
+        <br>
+
+        <footer>
+            <img class="footer" src="{% static 'images/footer.png' %}" alt="">
+        </footer>
+            <div>
+                <a href="{% url 'quote:edit_quote' quote.id %}"><button id="edit-button" type="submit">Edit</button></a>
+        </div>
+        <div>
+            <button id="print-button" onclick="printpage()">Print this page</button>
+        </div>
+        {% if invoice == 1 %}
+        <div>
+            <a href="{% url 'invoice:create_invoice' quote.id %}"><button id="invoice-button" type="button">Create Invoice</button></a>
+        </div>
+        {% else %}
+        <div>
+            <a href="{% url 'invoice:view_single_invoice' invoice.id %}"><button id="invoice-button" type="button">Show Invoice</button></a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

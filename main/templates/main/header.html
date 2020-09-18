@@ -90,6 +90,31 @@
             </ul>
           </div>
         </li>
+
+        <li class="sidebar-dropdown">
+          <a href="#">
+            <i class="zmdi zmdi-puzzle-piece"></i>
+            <span>Quotation</span>
+          </a>
+          <div class="sidebar-submenu">
+            <ul>
+              <li><a href="{% url 'quote:create_quote' %}">Create Quotation</a></li>
+              <li><a href="{% url 'quote:view_all_quote' %}">All Quotations</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="sidebar-dropdown">
+          <a href="#">
+            <i class="zmdi zmdi-file-text"></i>
+            <span>Invoice</span>
+          </a>
+          <div class="sidebar-submenu">
+            <ul>
+              <li><a href="{% url 'invoice:view_all_invoice' %}">All Invoice</a></li>
+            </ul>
+          </div>
+        </li>
         <!-- sidebar-menu  -->
 
         <!-- sidebar-content  -->
@@ -99,17 +124,15 @@
 
 
   <div class="logout">
- <div class="notification">
-  <a href="#">
-    <i class="fas fa-bell"></i><span class="countnoti" id="unread_notification_count"></span>
-  </a>
-    <ul id = "notification-list">
-
-    </ul>
-  </div>
+<!-- <div class="notification">-->
+<!--  <a href="#">-->
+<!--    <i class="fas fa-bell"></i><span class="countnoti" id="unread_notification_count"></span>-->
+<!--  </a>-->
+<!--    <ul id = "notification-list">-->
+<!--    </ul>-->
+<!--  </div>-->
     <h4><a href= "{% url 'main:logout_view' %}">Logout</a></h4>
   </div>
-</div>
 <!-- sidebar-wrapper  -->
 
 
