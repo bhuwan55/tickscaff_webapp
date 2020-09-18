@@ -38,9 +38,9 @@ def ViewSingleEmployee(request, id):
     month= today.month
 
     todayss = datetime.date.today()
-    start_week = todayss - datetime.timedelta(todayss.weekday()) - datetime.timedelta(days = 4)
+    start_week = todayss - datetime.timedelta(todayss.weekday())
     end_week = start_week + datetime.timedelta(6)
-    works = employee.work.all().filter(date__range=[start_week, end_week])
+    works = employee.work.all().filter(date__range=[start_week, end_week]).order_by("id")
     total_hours = employee.total_hours - employee.total_hours
     for work in works:
         total_hours = total_hours + work.hours
@@ -74,7 +74,7 @@ def ViewSingleEmployee(request, id):
 
         employee.work.add(work)
         employee.save()
-        return render(request, 'viewsingleemployee.html', {'employee': employee, 'works': works, 'today': today, })
+        return render(request, 'viewsingleemployee.html', {'employee': employee, 'works': works, 'today': today,'start_week':start_week })
 
     return render(request, 'viewsingleemployee.html', {'employee':employee, 'works':works,'today':today,'total_hours':total_hours,'start_week':start_week})
 
@@ -96,7 +96,7 @@ def ChangeMonth(request, id):
     today = datetime.date.today()
 
     todayss = datetime.date.today()
-    start_week = todayss - datetime.timedelta(todayss.weekday()) - datetime.timedelta(days = 4)
+    start_week = todayss - datetime.timedelta(todayss.weekday())
     end_week = start_week + datetime.timedelta(6)
     works = employee.work.all().filter(date__range=[start_week, end_week])
     total_hours = employee.total_hours - employee.total_hours

@@ -67,7 +67,6 @@ def AddGear(request):
 	return render(request, 'gear/addgear.html',{})
 
 
-
 def EditGear(request, id):
 	gear = Gear.objects.get(id=id)
 	if request.method == "POST":
@@ -198,7 +197,6 @@ def NewAddJobs(request, id):
 	return render(request, 'jobs/editedjobs.html', {'gears': gears})
 
 
-
 def ViewJobs(request):
 	jobs = Job.objects.all().order_by("id")
 
@@ -280,7 +278,28 @@ def DeleteJobs(request, id):
 			orderobj = Returnedgear.objects.get(id=returned.id)
 			orderobj.delete()
 	job.delete()
-	return redirect('company:view_company')
+	return redirect('quote:view_all_quote')
+
+
+def JobDetail(request,id):
+	job = Job.objects.get(id=id)
+	orders = job.order.all().order_by("id")
+	gears = Gear.objects.all()
+	company = Company.objects.get(job=job)
+	if request.method=='POST':
+		site = request.POST.get("site")
+		date_for_installation = request.POST.get("date_for_installation")
+		amount_of_bays = request.POST.get("amount_of_bays")
+		job_type = request.POST.get("job_type")
+
+		job.site = site
+		job.date_for_installation = date_for_installation
+		job.amount_of_bays = amount_of_bays
+		job.job_type = job_type
+		job.save()
+		return redirect('company:edit_company',id=job.company.id)
+
+	return render(request, 'jobs/jobdetail.html', {'job':job,'company':company, 'gears':gears,'orders':orders,})
 
 
 # --------------------------------------CRUD of Returned order in JOb-------------------------------------------------------

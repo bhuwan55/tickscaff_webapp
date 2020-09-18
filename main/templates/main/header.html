@@ -90,6 +90,31 @@
             </ul>
           </div>
         </li>
+
+        <li class="sidebar-dropdown">
+          <a href="#">
+            <i class="zmdi zmdi-puzzle-piece"></i>
+            <span>Quotation</span>
+          </a>
+          <div class="sidebar-submenu">
+            <ul>
+              <li><a href="{% url 'quote:create_quote' %}">Create Quotation</a></li>
+              <li><a href="{% url 'quote:view_all_quote' %}">All Quotations</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="sidebar-dropdown">
+          <a href="#">
+            <i class="zmdi zmdi-file-text"></i>
+            <span>Invoice</span>
+          </a>
+          <div class="sidebar-submenu">
+            <ul>
+              <li><a href="{% url 'invoice:view_all_invoice' %}">All Invoice</a></li>
+            </ul>
+          </div>
+        </li>
         <!-- sidebar-menu  -->
 
         <!-- sidebar-content  -->
