@@ -26,7 +26,7 @@ STATIC_DIR = os.path.join(BASE_DIR,"static")
 SECRET_KEY = ')a844n*vidgi)p97_75m!&t-p&cg^hzxu*sdb4chcm=b6ta0m$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'tickscaff',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'HOST': 'tickscaff.cnihkvraoduy.us-east-2.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
