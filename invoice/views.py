@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Invoice
+from main.models import Job
 from company.models import Company
 from quote.models import Quote
 import datetime
@@ -54,8 +55,11 @@ def EditInvoice(request, id):
         company = Company.objects.get(id=invoice.quote.job.company.id)
         company.name = to
         company.builder_abn = abn
-        print(company.builder_abn)
         company.save()
+
+        job = Job.objects.get(id=invoice.quote.job.id)
+        job.site = site
+        job.save()
 
         invoice.description1 = description[0]
         invoice.quantity1 = quantity[0]
@@ -94,14 +98,15 @@ def EditInvoice(request, id):
             invoice.total3 = None
             invoice.save()
 
-        invoice.date = date
+        today = datetime.date.today()
+        invoice.date = today
         invoice.subtotal = subtotal
         invoice.gst = gst
         invoice.total = total
         invoice.save()
         return redirect('invoice:final_invoice', invoice.id)
 
-    return render(request, 'editinvoice.html', {'invoice': invoice})
+    return render(request, 'jquery.html', {'invoice': invoice})
 
 
 def FinalInvoice(request, id):
