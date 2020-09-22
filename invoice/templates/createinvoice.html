@@ -1,0 +1,131 @@
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/invoice.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function printpage() {
+          //Get the print button and put it into a variable
+          var printButton = document.getElementById("print-button");
+          //Set the print button visibility to 'hidden'
+          printButton.style.visibility = 'hidden';
+          //Print the page content
+          window.print()
+          //Set the print button to 'visible' again
+          //[Delete this line if you want it to stay hidden after printing]
+          printButton.style.visibility = 'visible';
+      }
+      $(document).ready(function(){
+       $( ".add-row" ).click(function(){
+          var $tablerow = $( ".table-row" ).first().clone();
+          $tablerow.append( "<button type='button' class='btn remove-row btn-danger mx-2 h-30 my-4'>Remove</button>" );
+          $tablerow.insertBefore( ".add-row" );
+       });
+
+       $( ".myform" ).on("click", ".remove-row", function(){
+          $(this).parent().remove();
+       });
+    });
+      </script>
+</head>
+
+<body class="body">
+    <div class="container a4 ">
+    <div class="container">
+        <img class="image" src="{% static 'images/header.png' %}" alt="" style="height: 200px;">
+
+        <div class="h1">tax invoice</div>
+    </div>
+        <form method="post" action="#" class="myform">
+            {% csrf_token %}
+    <div class="row">
+        <div class="column">
+            <pre class="pre">
+                <b>Date</b>   <input type="text" name="date" value="{{ today|date:'Y/m/d' }}">
+
+
+                <b>To</b>      <textarea name="to" cols="30" rows="1">{{ quote.job.company.name }}</textarea>
+                <b>ABN</b>   <textarea name="abn" cols="30" rows="1">{{ quote.job.company.abn }}</textarea>
+                <b>SITE</b>  <textarea name="site" cols="30" rows="1">{{ quote.job.site }}</textarea>
+            </pre>
+        </div>
+        <div class="column">
+            <pre class="pre">
+
+
+
+            <b>FROM</b>      TICK SCAFFOLD PTY LTD
+            <b>ABN</b>         72 630 733 756
+            <b>ADDRESS</b> 28 Ainslie Rd Campbellfield Vic 3061
+
+            </pre>
+        </div>
+    </div>
+
+    <div class="centered">
+        <table class="table" style="width:100%">
+            <tr class="tableheader">
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+                <th>gst</th>
+                <th>total</th>
+            </tr>
+            <tr class="table-row">
+                <td class="tabledata"><textarea name="description1" id="" cols="50" rows="4">Scaffold hire for {{ quote.hire_period }} weeks starting from,
+ {{ quote.job.date_for_installation|date:'Y/m/d' }} until 23/09/2019. </textarea><br>
+                </td>
+                <td class="tabledata"><textarea name="quantity1" cols="20" rows="1">{{ quote.hire_period }}</textarea></td>
+                <td class="tabledata">$<textarea name="subtotal1" cols="8" rows="1">{{ quote.subtotal }}</textarea></td>
+                <td class="tabledata">$<textarea name="gst1" cols="6" rows="1">{{ quote.gst }}</textarea></td>
+                <td class="tabledata">$<textarea name="total1" cols="6" rows="1">{{ total }} </textarea></td>
+            </tr>
+        </table>
+
+        <div style="margin-left : 80px;"><button type="button" class="btn btn-danger add-row" id="add-row" >Add</button></div>
+    <div class="center">
+        <p class="p"><b>SUBTOTAL $(<input type="text" name="subtotal" value="{{ quote.subtotal }}">)</b></p>
+        <img class="imgcenter" src="{% static 'images/center.png' %}" alt="" style="height: 40px;">
+        <div class="row">
+            <div class="colcenter">
+                <div class="h2"><b>HOW TO PAY?</b></div>
+            </div>
+            <div class="colcenter">
+                <div class="h3"><b> GST $(<input type="text" name="gst" value="{{ quote.gst }}">)</b></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+            <pre class="pre">
+                <b>Online deposit or transfer to</b>
+                <b>ACC         Tick Scaffold PTY LTD
+                BSB          013-230
+                ACC No   313-257229</b>
+
+            </pre>
+        </div>
+        <div class="col">
+            <pre class="pre">
+                <b>TOTAL      ($ <input type="text" name="total" value="{{ total }}">)</b>
+            </pre>
+        </div>
+    </div>
+    <footer>
+        <img class="footer" src="{% static 'images/footer.png' %}" alt="">
+    </footer>
+         <div>
+            <button id="create" type="submit">Create</button>
+        </div>
+            </form>
+    <div>
+		<button id="print-button" onclick="printpage()">Print this page</button>
+    </div>
+</div>
+</body>
+</html>

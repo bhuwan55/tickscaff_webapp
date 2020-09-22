@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Suraj Gupta</title>
+
+    <link rel="stylesheet" href=" https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+            integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/jautocalc/dist/jautocalc.js' %}"></script>
+    <script src="./assets/Do-Calculations-Form-Fields-AutoCalc/dist/jautocalc.js"></script>
+</head>
+
+
+<body>
+    <hr>
+    <div class="container">
+        <form name="cart">
+            <table name="cart" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        
+                        <th>sub total</th>
+                        <th>Gst</th>
+                        <th>total</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr name="line_items">
+                        <td>
+                            <button name="remove" class="btn btn-danger btn-sm">Remove</button>
+                        </td>
+                        <td><textarea ></textarea></td>
+                        <td><input name="qty" type="text" value="3" class="form-control form-control-sm"></td>
+                        <td><input name="sub-total" type="text" value="10" class="form-control form-control-sm"></td>
+                        <td><input name="gst" type="text" jAutoCalc="{sub-total}*10/100" class="form-control form-control-sm"></td>
+                        <td><input name="item_total" type="text" jAutoCalc="{sub-total}+{gst}"
+                                class="form-control form-control-sm"></td>
+                    </tr>
+                    <tr name="line_items">
+                        <td>
+                            <button name="remove" class="btn btn-danger btn-sm">Remove</button>
+                        </td>
+                        <td><textarea ></textarea></td>
+                        <td><input name="qty" type="text" value="3" class="form-control form-control-sm"></td>
+                        <td><input name="sub-total" type="text" value="10" class="form-control form-control-sm"></td>
+                        <td><input name="gst" type="text" jAutoCalc="{sub-total}*10/100" class="form-control form-control-sm"></td>
+                        <td><input name="item_total" type="text" jAutoCalc="{sub-total}+{gst}"
+                                class="form-control form-control-sm"></td>
+                    </tr>
+                    <tr name="line_items">
+                        <td>
+                            <button name="remove" class="btn btn-danger btn-sm">Remove</button>
+                        </td>
+                        <td><textarea ></textarea></td>
+                        <td><input name="qty" type="text" value="3" class="form-control form-control-sm"></td>
+                        <td><input name="sub-total" type="text" value="10" class="form-control form-control-sm"></td>
+                        <td><input name="gst" type="text" jAutoCalc="{sub-total}*10/100" class="form-control form-control-sm"></td>
+                        <td><input name="item_total" type="text" jAutoCalc="{sub-total}+{gst}"
+                                class="form-control form-control-sm"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                        <td>SubTotal</td>
+                        
+                        <td><input type="text" name="sub_total" jAutoCalc="SUM({sub-total})"
+                                class="form-control form-control-sm"></td>
+                                <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">&nbsp;</td>
+                        <td>GST Total</td>
+                        
+                        <td><input type="text" name="sub_total" jAutoCalc="SUM({gst})"
+                                class="form-control form-control-sm"></td>
+                                <td colspan="1">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">&nbsp;</td>
+                        <td> Total</td>
+                        
+                        <td><input type="text" name="sub_total" jAutoCalc="SUM({item_total})"
+                                class="form-control form-control-sm"></td>
+                              
+                    </tr>
+                   
+                    <tr>
+                        <td colspan="5">
+                            <button name="add" class="btn btn-primary">Add_row</button>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </form>
+        <br>
+
+    </div>
+</body>
+<script type="text/javascript">
+    function autoCalcSetup() {
+        $('form[name=cart]').jAutoCalc('destroy');
+        $('form[name=cart] tr[name=line_items]').jAutoCalc({ keyEventsFire: true, decimalPlaces: 2, emptyAsZero: true });
+        $('form[name=cart]').jAutoCalc({ decimalPlaces: 2 });
+    }
+    autoCalcSetup();
+   
+    $('button[name=add]').click(function(e){
+        e.preventDefault();
+        alert("Do you want to add");
+        var $table = $(".table").parents('table');
+        var $top = $table.find('tr[name=line_items]').first();
+        var $new = $top.clone(true);
+        $new.jAutoCalc('destroy');
+        $new.insertBefore($top);
+        $new.find('input[type=text]').val('');
+        autoCalcSetup();
+
+    });
+    $('button[name=remove]').click(function(e) {
+        e.preventDefault();
+        alert("Do you want to remove");
+        var form = $(this).parents('form')
+        $(this).parents('tr').remove();
+        autoCalcSetup();
+    });
+</script>
+
+</html>

@@ -1,0 +1,172 @@
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/quote.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.company').select2({
+        tags: true
+        });
+});
+
+        function printpage() {
+            //Get the print button and put it into a variable
+            var printButton = document.getElementById("print-button");
+            //Set the print button visibility to 'hidden' 
+            printButton.style.visibility = 'hidden';
+            //Print the page content
+            window.print()
+            //Set the print button to 'visible' again 
+            //[Delete this line if you want it to stay hidden after printing]
+            printButton.style.visibility = 'visible';
+        }
+    </script>
+</head>
+
+<body class="body">
+
+    <div class="container a4 ">
+
+        <div class="container">
+            <img class="image" src="{% static 'images/header.png' %}" alt="" style="height: 150px;">
+
+            <div class="h1">quotation</div>
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+        <div class="row">
+            <div class="column">
+                <pre class="pre">
+                <b class="b">Date</b>  <input type="date" value="{{today|date:'Y-m-d'}}" name="date">
+
+                <b class="b">To</b>      <select class="company" name="company">
+                                            <option value="" selected hidden>-- Select Company --</option>
+                                            {% for company in company %}
+                                            <option>{{ company.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                <b class="b">SITE</b>  <input type="text" value="16 Lemco walk delahey" name="site">
+            </pre>
+            </div>
+            <div class="column">
+                <pre class="pre">
+
+
+            <b class="b">PHONE</b>     0450 405 743
+            <b class="b">EMAIL</b>      Info@tickscaffold.com.au
+            <b class="b">ABN</b>         72 630 733 756
+            <b class="b">ADDRESS</b> 28 Ainslie Rd Campbellfield Vic 3061
+
+            </pre>
+            </div>
+        </div>
+
+        <div class="centered">
+            <p class="p">Dear <input type="text" value="Sergio" id="builder_name" name="builder_name"> <br><br>Please find below the scope of work and quotation
+                for the scaffold you have required. If you have any question please feel free to contact us.
+            </p>
+        </div>
+        <div class="container imageback">
+           
+        <div class="center">
+            <img class="imgcenter" src="{% static 'images/center.png' %}" alt="" style="height: 35px;">
+            <div class="row">
+                <div class="colcenter">
+                    <div class="h2"><b>JOB DESCRIPION:</b></div>
+                    <div class="background">
+                        <img class="imgback" src="{% static 'images/s.png' %}" alt="" height="200px">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+            
+            <div class="row">
+                <div class="col">
+                    <p class="desc">Supply, carry, dismantle, deliver and erect K-stage scaffold and components all
+                        around
+                        the job site to provide <textarea rows="1" cols="98" name="description1"> access for roof work, facia, gutter and cladding. </textarea>
+                        <br>
+                        <br>
+                        Scaffolding will compromise of approx <textarea name="description2" cols="62" rows="1">43 LM, 0.7 M Wide & 7 M high Platforms.</textarea>
+                        <br>
+                        <br>
+                        <textarea name="description3" cols="98" rows="1">Ladders will be supplied, kick boards and Hand Rails will be installed all around the job.</textarea>
+                        Scaffold
+                        will be supplied in accordance with AS/NZS1576:2010 and erected in accordance with
+                        AS/NZS4576:1995.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="center">
+            <img class="imgcenter" src="{% static 'images/cen.png' %}" alt="" style="height: 35px;">
+            <div class="row">
+                <div class="scope">
+                    <div class="h3"><b>SCOPE OF THE WORK:</b></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="list">
+                <ul class="unlist">
+                    <li>Delivery to the Site</li>
+                    <li>Carry</li>
+                    <li>Erect</li>
+                    <li>Dismantle</li>
+                    <li>Gather Scaffold</li>
+                    <li>Delivery from Site</li>
+                    <li><input type="text" name="hire_period" value="4" > weeks Hire</li>
+                    <li><input type="text" name="new_scope" value="" ></li>
+                </ul>
+            </div>
+
+            <div class="para">
+                <p class="par">Therefore the total cost of the job will be $<input type="text" name="subtotal" value="4620"> plus GST, if the scaffold is needed
+                    for a longer
+                    period then the 4 weeks, there will be a weekly rental of $<input type="text" name="gst" value="462"> plus GST.
+                      <textarea name="scope_end"  cols="98" rows="1"></textarea>
+                    </p>
+            </div>
+
+            <div class="column collast">
+                <p class="prelast">
+                    You're sincerely
+                    <br>
+                    <br>
+                    <br>
+                    Sam. J
+                    <br>
+                    <br>
+                    Tick Scaffold Pty Ltd
+                </p>
+                <!-- <pre class="prelast">
+                    You're sincerely 
+
+
+                    Sam. J
+
+                    Tick Scaffold Pty Ltd
+
+                </pre> -->
+            </div>
+        </div>
+
+        <footer>
+            <img class="footer" src="{% static 'images/footer.png' %}" alt="">
+        </footer>
+            <div>
+            <button type="submit">Create</button>
+        </div>
+            </form>
+    </div>
+</body>
+</html>
