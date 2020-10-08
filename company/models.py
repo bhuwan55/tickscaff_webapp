@@ -6,7 +6,7 @@ from datetime import date
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
-    builder_name = models.CharField(max_length=50)
+    builder_name = models.CharField(max_length=50,blank=True, null=True)
     builder_abn = models.CharField(max_length=50, blank=True, null=True)
     sub_name = models.CharField(max_length=50, default="Sam")
     sub_contact = models. BigIntegerField(default="450405743")

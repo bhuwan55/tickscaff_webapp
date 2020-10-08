@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="en">
+{% if user.is_authenticated %}
+
 {% load staticfiles %}
 <head>
     <meta charset="UTF-8">
@@ -32,9 +34,9 @@
             <pre class="pre">
                 <b>Date</b>   <input name="date" id="date" value="{{ invoice.date|date:'Y-m-d' }}" type="date">
 
-                <b>To</b>      <textarea name="to" id="to" cols="30" rows="1">{{ invoice.quote.job.company.name }}</textarea>
-                <b>ABN</b>   <textarea name="abn" id="abn" cols="30" rows="1">{{ invoice.quote.job.company.builder_abn }}</textarea>
-                <b>SITE</b>  <textarea name="site" id="site" cols="30" rows="1">{{ invoice.quote.job.site }}</textarea>
+                <b>To</b>      <textarea name="to" id="to" cols="30" rows="1">{{ invoice.to }}</textarea>
+                <b>ABN</b>   <textarea name="abn" id="abn" cols="30" rows="1">{{ invoice.abn }}</textarea>
+                <b>SITE</b>  <textarea name="site" id="site" cols="30" rows="1">{{ invoice.site }}</textarea>
             </pre>
         </div>
         <div class="column">
@@ -53,9 +55,9 @@
             <form method="post" action="{% url 'invoice:edit_invoice' invoice.id %}" name="invoice">
                 {% csrf_token %}
                 <input name="date" id="date_new" value="{{ invoice.date|date:'Y-m-d' }}" hidden>
-                <textarea name="to" id="to_new" cols="30" rows="1" hidden>{{ invoice.quote.job.company.name }}</textarea>
-                <textarea name="abn" id="abn_new" cols="30" rows="1" hidden>{{ invoice.quote.job.company.builder_abn }}</textarea>
-                <textarea name="site" id="site_new" cols="30" rows="1" hidden>{{ invoice.quote.job.site }}</textarea>
+                <textarea name="to" id="to_new" cols="30" rows="1" hidden>{{ invoice.to }}</textarea>
+                <textarea name="abn" id="abn_new" cols="30" rows="1" hidden>{{ invoice.abn }}</textarea>
+                <textarea name="site" id="site_new" cols="30" rows="1" hidden>{{ invoice.site }}</textarea>
                 <table class="table" name="invoice" style="width:100%">
                     <tr class="tableheader">
                         <th class="th" style="width: 40%;">Description</th>
@@ -66,7 +68,7 @@
                     </tr>
                     <tr name="line_items" class="table-row">
                             <td class="tabledata" style="width : 40%;"><textarea name="description" cols="45" rows="4">{{ invoice.description1 }}</textarea><br></td>
-                            <td class="tabledata" style="width : 15%;"><textarea name="quantity" cols="10" rows="1">{{ invoice.quote.hire_period }} weeks</textarea></td>
+                            <td class="tabledata" style="width : 15%;"><textarea name="quantity" cols="10" rows="1">{{ invoice.quantity1 }}</textarea></td>
                             <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="subtotal1" type="text" value="{{ invoice.subtotal1 }}">
                             </td>
                             <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="gst1" type="text" jAutoCalc="{subtotal1}*10/100" value="{{ invoice.gst1 }}"></td>
@@ -77,12 +79,12 @@
                     </tr>
                     {% if invoice.description2 %}
                     <tr name="line_items" class="table-row">
-                            <td class="tabledata" style="width : 40%;"><textarea name="description" cols="45" rows="4">{{ invoice.description1 }}</textarea><br></td>
-                            <td class="tabledata" style="width : 15%;"><textarea name="quantity" cols="10" rows="1">{{ invoice.quote.hire_period }} weeks</textarea></td>
-                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="subtotal1" type="text" value="{{ invoice.subtotal1 }}">
+                            <td class="tabledata" style="width : 40%;"><textarea name="description" cols="45" rows="4">{{ invoice.description2 }}</textarea><br></td>
+                            <td class="tabledata" style="width : 15%;"><textarea name="quantity" cols="10" rows="1">{{ invoice.quantity2 }}</textarea></td>
+                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="subtotal1" type="text" value="{{ invoice.subtotal2 }}">
                             </td>
-                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="gst1" type="text" jAutoCalc="{subtotal1}*10/100" value="{{ invoice.gst1 }}" readonly="false"></td>
-                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="total1" type="text" jAutoCalc="{subtotal1}+{gst1}" value="{{ invoice.total1 }}" readonly="false"></td>
+                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="gst1" type="text" jAutoCalc="{subtotal1}*10/100" value="{{ invoice.gst2 }}" readonly="false"></td>
+                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="total1" type="text" jAutoCalc="{subtotal1}+{gst1}" value="{{ invoice.total2 }}" readonly="false"></td>
                             <td>
                                 <button name="remove" class="btn btn-danger btn-sm">Remove</button>
                             </td>
@@ -91,12 +93,12 @@
 
                     {% if invoice.description3 %}
                     <tr name="line_items" class="table-row">
-                            <td class="tabledata" style="width :40%;"><textarea name="description" cols="45" rows="4">{{ invoice.description1 }}</textarea><br></td>
-                            <td class="tabledata" style="width : 15%;"><textarea name="quantity" cols="10" rows="1">{{ invoice.quote.hire_period }} weeks</textarea></td>
-                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="subtotal1" type="text" value="{{ invoice.subtotal1 }}">
+                            <td class="tabledata" style="width :40%;"><textarea name="description" cols="45" rows="4">{{ invoice.description3 }}</textarea><br></td>
+                            <td class="tabledata" style="width : 15%;"><textarea name="quantity" cols="10" rows="1">{{ invoice.quantity3 }}</textarea></td>
+                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="subtotal1" type="text" value="{{ invoice.subtotal3 }}">
                             </td>
-                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="gst1" type="text" jAutoCalc="{subtotal1}*10/100" value="{{ invoice.gst1 }}"></td>
-                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="total1" type="text" jAutoCalc="{subtotal1}+{gst1}" value="{{ invoice.total1 }}"></td>
+                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="gst1" type="text" jAutoCalc="{subtotal1}*10/100" value="{{ invoice.gst3 }}"></td>
+                            <td class="tabledata" style="width : 15%;">$ <input style="width:90%;" name="total1" type="text" jAutoCalc="{subtotal1}+{gst1}" value="{{ invoice.total3 }}"></td>
                             <td>
                                 <button name="remove" class="btn btn-danger btn-sm">Remove</button>
                             </td>
@@ -160,7 +162,7 @@
 
     function autoCalcSetup() {
         $('form[name=invoice]').jAutoCalc('destroy');
-        $('form[name=invoice] tr[name=line_items]').jAutoCalc({ keyEventsFire: true, readOnlyResults: false,showParseError: false, decimalPlaces: 2, emptyAsZero: true });
+        $('form[name=invoice] tr[name=line_items]').jAutoCalc({ keyEventsFire: false, readOnlyResults: false,showParseError: false, decimalPlaces: 2, emptyAsZero: true});
         $('form[name=invoice]').jAutoCalc({ decimalPlaces: 2 });
     }
     autoCalcSetup();
@@ -172,8 +174,8 @@
         var $top = $table.find('tr[name=line_items]').first();
         var $new = $top.clone(true);
         $new.jAutoCalc('destroy');
-        $new.insertBefore($top);
-        $new.find('input[type=text]').val('');
+        $new.insertAfter($top);
+        $new.find('input[type=text]').val('0');
         autoCalcSetup();
 
     });
@@ -186,7 +188,6 @@
     });
 
     $("#date").keyup(function(){
-    console.log("hello");
     var $date = $(this).val();
     $("#date_new").val($date);
     });
@@ -206,5 +207,8 @@
     $("#site_new").val($site);
     });
 </script>
-
+{% endif %}
+{% if user.is_authenticated == False %}
+      <h3>It looks like you are not logged in!! Please <b><a href="{% url 'main:login_page' %}"> Log in </a></b></h3>
+{% endif %}
 </html>

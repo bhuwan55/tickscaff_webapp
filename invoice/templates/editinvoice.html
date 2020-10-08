@@ -1,4 +1,6 @@
 <html lang="en">
+{% if user.is_authenticated %}
+
 {% load staticfiles %}
 <head>
     <meta charset="UTF-8">
@@ -56,34 +58,36 @@
                 <th class="th" style="width: 15%;">gst</th>
                 <th class="th" style="width: 15%;">total</th>
             </tr>
+            {% if invoice.description1: %}
             <tr name="line_items" class="table-row">
                 <td class="tabledata" style="width: 40%;"><textarea name="description" id="" cols="50" rows="4">{{ invoice.description1 }}</textarea><br>
                 </td>
-                <td class="tabledata" style="width: 15%;"><textarea name="quantity" cols="20" rows="1">{{ invoice.quote.hire_period }} weeks</textarea></td>
+                <td class="tabledata" style="width: 15%;"><textarea name="quantity" cols="20" rows="1">{{ invoice.quantity1 }}</textarea></td>
                 <td class="tabledata" style="width: 15%;">$<textarea class="subtotal1" name="subtotal1" cols="8" rows="1">{{ invoice.subtotal1 }}</textarea></td>
                 <td class="tabledata" style="width: 15%;">$<textarea class="gst1" name="gst1" jAutoCalc="{subtotal1}*10/100" cols="6" rows="1">{{ invoice.gst1 }}</textarea></td>
                 <td class="tabledata" style="width: 15%;">$<textarea class="total1" name="total1" jAutoCalc="{subtotal1}+{gst1} cols="6" rows="1">{{ invoice.total1 }} </textarea></td>
                 <td><button type='button' name="remove" class='btn remove-row btn-danger mx-2 h-30 my-4'>Remove</button></td>
             </tr>
+            {% endif %}
             <tr>
                 <td>
                 <div style="margin-left : 60px;"><button type="button" name="add" class="btn btn-danger add-row" id="add-row" >Add</button></div>
                 </td>
             </tr>
 
-            {% if invoice.description2 %}
+            {% if invoice.description2: %}
             <tr class="table-row" name="line_items">
                 <td class="tabledata" style="width: 40%;"><textarea name="description" id="" cols="50" rows="4">{{ invoice.description2 }}</textarea><br>
                 </td>
                 <td class="tabledata" style="width: 15%;"><textarea name="quantity" cols="20" rows="1">{{ invoice.quantity2 }}</textarea></td>
                 <td class="tabledata" style="width: 15%;">$<textarea class="subtotal1" name="subtotal1" cols="8" rows="1">{{ invoice.subtotal2 }}</textarea></td>
                 <td class="tabledata" style="width: 15%;">$<textarea class="gst1" name="gst1" cols="6" rows="1">{{ invoice.gst2 }}</textarea></td>
-                <td class="tabledata" style="width: 15%;">$<textarea class="total1" name="total1" cols="6" rows="1">{{ invoice.total3 }} </textarea></td>
+                <td class="tabledata" style="width: 15%;">$<textarea class="total1" name="total1" cols="6" rows="1">{{ invoice.total2 }} </textarea></td>
                 <td><button type='button' class='btn remove-row btn-danger mx-2 h-30 my-4'>Remove</button></td>
             </tr>
             {% endif %}
 
-            {% if invoice.description3 %}
+            {% if invoice.description3: %}
             <tr class="table-row" name="line_items">
                 <td class="tabledata" style="width: 40%;"><textarea name="description" id="" cols="50" rows="4">{{ invoice.description3 }}</textarea><br>
                 </td>
@@ -138,7 +142,7 @@
 <script type="text/javascript">
     function autoCalcSetup() {
         $('table[name=cart]').jAutoCalc('destroy');
-        $('table[name=cart] tr[name=line_items]').jAutoCalc({ keyEventsFire: true, decimalPlaces: 2, emptyAsZero: true });
+        $('table[name=cart] tr[name=line_items]').jAutoCalc({ keyEventsFire: true, decimalPlaces: 2, emptyAsZero: true, thousandOpts: [' '] });
         $('table[name=cart]').jAutoCalc({ decimalPlaces: 2 });
     }
     autoCalcSetup();
@@ -163,4 +167,8 @@
         autoCalcSetup();
     });
 </script>
+{% endif %}
+{% if user.is_authenticated == False %}
+      <h3>It looks like you are not logged in!! Please <b><a href="{% url 'main:login_page' %}"> Log in </a></b></h3>
+{% endif %}
 </html>

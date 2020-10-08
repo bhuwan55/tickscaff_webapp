@@ -16,7 +16,7 @@
   transform: translate(-75%, -25%);
   text-transform: uppercase;
   color: white;
-  font-size: 33px;
+  font-size: 30px;
   letter-spacing: 1px;
 }
 
@@ -30,8 +30,9 @@
 .pre{
     font-family: sans-serif;
     font-size: 15px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     line-height: 2;
+    transform: translate(-45px, 0px);
 
 }
 
@@ -41,6 +42,7 @@
     padding-left: 60px;
     padding-right: 30px;
     border-collapse: collapse;
+    transform: translate(35px, 0px);
     
 }
 
@@ -52,6 +54,7 @@
     text-transform: uppercase;
     font-family: sans-serif;
     letter-spacing: 1px;
+
 }
 
 .tabledata{
