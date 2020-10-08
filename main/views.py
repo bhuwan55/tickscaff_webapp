@@ -14,7 +14,6 @@ def Login(request):
 		password = request.POST['password']
 		user = authenticate(username=username, password=password)
 		if user is None:
-			print("hello")
 			context = {
 				'message': "Incorrect Username or Password. Please Log in again",
 			}
