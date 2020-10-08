@@ -2,8 +2,14 @@ from django.shortcuts import render, redirect
 from company.models import Company
 from main.models import Job, Gear, Ordergear
 from .models import Quote
-import datetime
 from invoice.models import Invoice
+from email.message import EmailMessage
+from invoice.models import Invoice
+from django.template.loader import get_template
+import os
+import smtplib
+import pdfkit
+import datetime
 # Create your views here.
 
 
@@ -36,7 +42,6 @@ def CreateQuote(request):
             ordergear = Ordergear.objects.create(gear=gear, used_quantity=0, subtotal_weight=0)
             job.order.add(ordergear)
         job.save()
-
 
         quote = Quote.objects.create(date=date, job=job, description1=description1\
                , description2=description2, description3=description3, hire_period=hire_period\
@@ -115,3 +120,43 @@ def DeleteQuote(request, id):
     job = Job.objects.get(id=quote.job.id)
 
     return redirect('main:delete_jobs', id=job.id)
+
+def Sendmail(request, id):
+    quote = Quote.objects.get(id=id)
+    try:
+        invoice = Invoice.objects.get(quote=quote)
+    except Invoice.DoesNotExist:
+        invoice = 1
+
+    if request.method == 'POST':
+        to = request.POST.get('to')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        EMAIL_ADDRESS = os.environ.get('EMAIL_ADDRESS')
+        EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+
+
+        msg = EmailMessage()
+        msg['Subject'] = subject
+        msg['From'] = EMAIL_ADDRESS
+        msg['To'] = to
+        msg.set_content(message)
+
+        template = get_template('mailquote.html')
+        html = template.render({'quote': quote, 'invoice':invoice})
+        options = {
+            'page-size': 'A4',
+            'encoding': "UTF-8",
+        }
+        css = 'static/css/quote.css'
+        pdf = pdfkit.from_string(html, False, options, css=css)
+        file_name = quote.job.site  + " scaffold invoice.pdf"
+
+
+        msg.add_attachment(pdf, maintype='application', subtype='octet-stream', filename=file_name)
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            smtp.send_message(msg)
+
+    return redirect('quote:view_single_quote', id=quote.id)

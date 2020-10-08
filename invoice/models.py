@@ -6,7 +6,10 @@ from quote.models import Quote
 
 class Invoice(models.Model):
     date = models.DateField(default=date.today)
-    quote = models.OneToOneField(Quote, on_delete = models.CASCADE)
+    to = models.CharField(max_length=50, blank=True, null=True)
+    abn = models.CharField(max_length=50, blank=True, null=True)
+    site = models.CharField(max_length=50, blank=True, null=True)
+    quote = models.ManyToManyField(Quote)
     description1 = models.TextField(blank=True, null=True)
     description2 = models.TextField(blank=True, null=True)
     description3 = models.TextField(blank=True, null=True)
