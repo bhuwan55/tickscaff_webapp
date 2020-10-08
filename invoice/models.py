@@ -9,7 +9,7 @@ class Invoice(models.Model):
     to = models.CharField(max_length=50, blank=True, null=True)
     abn = models.CharField(max_length=50, blank=True, null=True)
     site = models.CharField(max_length=50, blank=True, null=True)
-    quote = models.OneToOneField(Quote, on_delete=models.CASCADE)
+    quote = models.ManyToManyField(Quote)
     description1 = models.TextField(blank=True, null=True)
     description2 = models.TextField(blank=True, null=True)
     description3 = models.TextField(blank=True, null=True)
