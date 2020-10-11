@@ -148,6 +148,10 @@
         </div>
 
         <div>
+             <a href="{% url 'invoice:view_pdf' invoice.id %}"><button style="margin-bottom: 10px;" id="create" type="submit">View Pdf</button></a>
+        </div>
+
+        <div>
             <button id="edit-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="margin-bottom: 10px;">Send Mail</button>
         </div>
 

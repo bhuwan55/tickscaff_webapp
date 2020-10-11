@@ -6,6 +6,7 @@ from invoice.models import Invoice
 from email.message import EmailMessage
 from invoice.models import Invoice
 from django.template.loader import get_template
+from django.http import HttpResponse
 import os
 import smtplib
 import pdfkit
@@ -160,3 +161,23 @@ def Sendmail(request, id):
             smtp.send_message(msg)
 
     return redirect('quote:view_single_quote', id=quote.id)
+
+
+def ViewPdfquote(request, id):
+    quote = Quote.objects.get(id=id)
+    try:
+        invoice = Invoice.objects.get(quote=quote)
+    except Invoice.DoesNotExist:
+        invoice = 1
+
+    template = get_template('mailquote.html')
+    html = template.render({'quote': quote, 'invoice': invoice})
+    options = {
+        'page-size': 'A4',
+        'encoding': "UTF-8",
+    }
+    css = 'static/css/quote.css'
+    pdf = pdfkit.from_string(html, False, options, css=css)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=some_file.pdf'
+    return response
