@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreateQuote, ViewSingleQuote, ViewAllQuote, EditQuote, DeleteQuote, Sendmail
+from .views import CreateQuote, ViewSingleQuote, ViewPdfquote, ViewAllQuote, EditQuote, DeleteQuote, Sendmail
 
 app_name = 'quote'
 
@@ -12,5 +12,6 @@ urlpatterns = [
     path('delete/<int:id>', DeleteQuote, name="delete_quote"),
 
     path('send/<int:id>', Sendmail, name="send_mail"),
+    path('view/pdf/<int:id>', ViewPdfquote, name="view_pdf")
 
     ]

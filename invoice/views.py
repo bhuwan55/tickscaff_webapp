@@ -5,6 +5,7 @@ from company.models import Company
 from quote.models import Quote
 from email.message import EmailMessage
 from django.template.loader import get_template
+from django.http import HttpResponse
 import os
 import smtplib
 import pdfkit
@@ -243,3 +244,18 @@ def DeleteInvoice(request, id):
     invoice = Invoice.objects.get(id=id)
     invoice.delete()
     return redirect('invoice:view_all_invoice')
+
+
+def ViewPdfInvoice(request, id):
+    invoice = Invoice.objects.get(id=id)
+    template = get_template('sendmailinvoice.html')
+    html = template.render({'invoice': invoice})
+    options = {
+        'page-size': 'A4',
+        'encoding': "UTF-8",
+    }
+    css = 'static/css/invoice.css'
+    pdf = pdfkit.from_string(html, False, options, css=css)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=some_file.pdf'
+    return response
