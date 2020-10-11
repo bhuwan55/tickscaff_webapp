@@ -26,7 +26,7 @@ STATIC_DIR = os.path.join(BASE_DIR,"static")
 SECRET_KEY = ')a844n*vidgi)p97_75m!&t-p&cg^hzxu*sdb4chcm=b6ta0m$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,10 +84,10 @@ WSGI_APPLICATION = 'tickscaff.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tickscaff',
+        'NAME': 'tickscaffold',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'HOST': 'tickscaffold.cnihkvraoduy.us-east-2.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
