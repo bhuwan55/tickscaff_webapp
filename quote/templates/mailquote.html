@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ quote.job.site }} Scaffold Invoice</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/quote.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
@@ -40,43 +39,46 @@
     <div class="container a4 ">
 
         <div class="container">
+            <img class="image" src="http://ec2-3-18-103-187.us-east-2.compute.amazonaws.com/static/images/header.png" alt="" style="height: 150px;">
 
-            <div class="h1">quotation</div>
+            <div class="h1" style="right: 50px;">quotation</div>
         </div>
         <div class="row">
-            <div class="column">
-                <pre class="pre">
+            <div class="column lefty">
+                <p class="pre">
                 <b class="b">Date</b>     {{quote.job.date_for_installation}}
-
-                <b class="b">To</b>        {{quote.job.company.name}}
-                <b class="b">SITE</b>    {{ quote.job.site }}
-            </pre>
+                <br> <br>
+                <b class="b">To</b>        {{quote.job.company.name}} <br>
+                <b class="b">SITE</b>    {{ quote.job.site }} <br>
+            </p>
             </div>
-            <div class="column">
-                <pre class="pre">
+            <div class="column righty">
+                <p class="pre">
+Dear {{quote.job.company.builder_name}}  <br><br>Please find below the scope of work and quotation
+                for the scaffold you have required. If you have any question please feel free to contact us.
 
-
-            <b class="b">PHONE</b>      0450 405 743
-            <b class="b">EMAIL</b>       Info@tickscaffold.com.au
-            <b class="b">ABN</b>          72 630 733 756
-            <b class="b">ADDRESS</b> 28 Ainslie Rd Campbellfield Vic 3061
-
-            </pre>
+            </p>
             </div>
         </div>
-
+        <br>
         <div class="centered">
-            <p class="p">Dear {{quote.job.company.builder_name}}  <br><br>Please find below the scope of work and quotation
-                for the scaffold you have required. If you have any question please feel free to contact us.
+            <p class="p">
+<br> <br><br>
+            <b class="b">PHONE</b>      0450 405 743 <br>
+            <b class="b">EMAIL</b>       Info@tickscaffold.com.au <br>
+            <b class="b">ABN</b>          72 630 733 756 <br>
+            <b class="b">ADDRESS</b> 28 Ainslie Rd Campbellfield Vic 3061 <br> <br>
             </p>
         </div>
         <div class="container imageback">
 
         <div class="center">
+            <img class="imgcenter" src="http://ec2-3-18-103-187.us-east-2.compute.amazonaws.com/static/images/center.png" alt="" style="height: 35px;">
             <div class="row">
                 <div class="colcenter">
-                    <div class="h2"><b>JOB DESCRIPION:</b></div>
+                    <div class="h2"><p>JOB DESCRIPTION:</p></div>
                     <div class="background">
+                        <img class="imgback" src="http://ec2-3-18-103-187.us-east-2.compute.amazonaws.com/static/images/s.png" alt="" height="200px">
                     </div>
                 </div>
             </div>
@@ -104,9 +106,10 @@
 
         </div>
         <div class="center">
+            <img class="imgcenter" src="http://ec2-3-18-103-187.us-east-2.compute.amazonaws.com/static/images/cen.png" alt="" style="height: 35px;">
             <div class="row">
                 <div class="scope">
-                    <div class="h3"><b>SCOPE OF THE WORK:</b></div>
+                    <div class="h3"><p>SCOPE OF THE WORK:</p></div>
                 </div>
             </div>
         </div>
@@ -156,8 +159,10 @@
             </div>
         </div>
         <br>
+	
 
-        <footer>
+        <footer style="position: fixed; bottom: 10px; left: 0; width: 100%;">
+            <img class="footer" src="http://ec2-3-18-103-187.us-east-2.compute.amazonaws.com/static/images/footer.png" alt="">
         </footer>
     </div>
 </body>
