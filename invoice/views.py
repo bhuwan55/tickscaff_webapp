@@ -254,7 +254,7 @@ def ViewPdfInvoice(request, id):
         'page-size': 'A4',
         'encoding': "UTF-8",
     }
-    css = 'static/css/invoice.css'
+    css = 'static/css/invoicemail.css'
     pdf = pdfkit.from_string(html, False, options, css=css)
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'filename=some_file.pdf'

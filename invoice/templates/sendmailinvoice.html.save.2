@@ -46,24 +46,11 @@
     <div class="row">
         <div class="column lefty">
             <p class="pre">
-                <b>Date</b>  &nbsp; {{ invoice.date|date:'Y/m/d' }} <br> <br>
+                <b>Date</b>   {{ invoice.date|date:'Y/m/d' }} <br> <br>
 
-
-		<table style="width:100%" class="toform">
-  			<tr>
-   				 <td><b>TO</b> &nbsp;&nbsp;&nbsp; {{ invoice.to }}</td>
-   				 <td><b>FROM</b> &nbsp;&nbsp; TICK SCAFFOLD PTY LTD </td>
- 			 </tr>
- 			 <tr>
-   				 <td><b>ABN</b>&nbsp;&nbsp; {{ invoice.abn }} </td>
-    				<td><b>ABN</b>  &emsp;&nbsp;&nbsp;       72 630 733 756 </td>
-  			</tr>
- 			 <tr>
-   				 <td><b>SITE</b>&nbsp;  {{ invoice.site }} </td>
-    				<td><b>SITE</b> &nbsp;&nbsp;&nbsp;&nbsp; 28 Ainslie Rd Campbellfield Vic 3061</td>
- 			 </tr>
-		</table>
-		<br>
+                <b>To</b> &nbsp;&nbsp;&nbsp; {{ invoice.to }}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  <b>FROM</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TICK SCAFFOLD PTY LTD <br>
+                <b>ABN</b>&nbsp; {{ invoice.abn }} &emsp;&emsp; &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; <b>ABN</b> &emsp;&emsp;&emsp;&nbsp;&nbsp; &nbsp;&nbsp;       72 630 733 756 <br>
+                <b>SITE</b>&nbsp;  {{ invoice.site }}&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;   <b>ADDRESS</b> 28 Ainslie Rd Campbellfield Vic 3061 <br> <br> <br>
             </p>
         </div>
 </div>
@@ -76,36 +63,36 @@
         <table class="table" style="width:100%">
             <tr class="tableheader">
                 <th class="th" style="width: 40%; right: 73%;">Description</th>
-                <th class="th" style="width: 15%;">&nbsp; Qty</th>
+                <th class="th" style="width: 15%;">Qty</th>
                 <th class="th" style="width: 15%;">Subtotal</th>
-                <th class="th" style="width: 15%;">&nbsp; gst</th>
+                <th class="th" style="width: 15%;">gst</th>
                 <th class="th" style="width: 15%;">total</th>
             </tr>
            {% if invoice.description1 %}
              <tr class="table-row">
-                <td class="tabledata" style="width: 35%; vertical-align: top;">{{ invoice.description1 }}</td>
-                <td class="tabledata" style="width: 15%; vertical-align: top;"> &nbsp;{{ invoice.quantity1 }}</td>
-                <td class="tabledata" style="width: 15%; vertical-align: top;">$ {{ invoice.subtotal1.normalize }}</td>
-                <td class="tabledata" style="width: 15%;  vertical-align: top;">$ {{ invoice.gst1.normalize }}</td>
-                <td class="tabledata" style="width: 15%;  vertical-align: top;">$ {{ invoice.total1.normalize }}</td>
+                <td class="tabledata" style="width: 40%;">{{ invoice.description1 }}</td>
+                <td class="tabledata" style="width: 15%;">{{ invoice.quantity1 }}</td>
+                <td class="tabledata" style="width: 15%;">$ {{ invoice.subtotal1.normalize }}</td>
+                <td class="tabledata" style="width: 15%;">$ {{ invoice.gst1.normalize }}</td>
+                <td class="tabledata" style="width: 15%;">$ {{ invoice.total1.normalize }}</td>
             </tr>
             {% endif %}
             {% if invoice.description2 %}
             <tr class="table-row">
-                <td class="tabledata" style=" vertical-align: top;">{{ invoice.description2 }}</td>
-                <td class="tabledata" style=" vertical-align: top;"> &nbsp;{{ invoice.quantity2 }}</td>
-                <td class="tabledata" style=" vertical-align: top;">$ {{ invoice.subtotal2.normalize }}</td>
-                <td class="tabledata" style=" vertical-align: top;">$ {{ invoice.gst2.normalize }}</td>
-                <td class="tabledata" style=" vertical-align: top;">$ {{ invoice.total2.normalize }}</td>
+                <td class="tabledata">{{ invoice.description2 }}</td>
+                <td class="tabledata">{{ invoice.quantity2 }}</td>
+                <td class="tabledata">$ {{ invoice.subtotal2.normalize }}</td>
+                <td class="tabledata">$ {{ invoice.gst2.normalize }}</td>
+                <td class="tabledata">$ {{ invoice.total2.normalize }}</td>
             </tr>
             {% endif %}
             {% if invoice.description3 %}
             <tr class="table-row">
-                <td class="tabledata" style=" vertical-align: top;">{{ invoice.description3 }}</td>
-                <td class="tabledata" style=" vertical-align: top;"> &nbsp;{{ invoice.quantity3 }}</td>
-                <td class="tabledata" style=" vertical-align: top;">$ {{ invoice.subtotal3.normalize }}</td>
-                <td class="tabledata" style=" vertical-align: top;">$ {{ invoice.gst3.normalize }}</td>
-                <td class="tabledata" style=" vertical-align: top;">$ {{ invoice.total3.normalize }}</td>
+                <td class="tabledata">{{ invoice.description3 }}</td>
+                <td class="tabledata">{{ invoice.quantity3 }}</td>
+                <td class="tabledata">$ {{ invoice.subtotal3.normalize }}</td>
+                <td class="tabledata">$ {{ invoice.gst3.normalize }}</td>
+                <td class="tabledata">$ {{ invoice.total3.normalize }}</td>
             </tr>
             {% endif %}
         </table>
@@ -113,7 +100,7 @@
     <footer style="position: fixed; bottom: 0; left: 0; width: 100%;">
         <div class="cen" >
     <div class="center">
-        <p class="p" style="transform: translate(-2%,-10%);"><b>&nbsp;SUBTOTAL ($ {{ invoice.subtotal.normalize }})</b></p>
+        <p class="p" style="transform: translate(-2%,-10%);"><b>SUBTOTAL ($ {{ invoice.subtotal.normalize }})</b></p>
         <img class="imgcenter" style="transform: translate(-4%,-12%);" src="http://ec2-3-18-103-187.us-east-2.compute.amazonaws.com/static/images/center.png" alt="" style="height: 40px;">
         <div class="row">
             <div class="colcenter">
